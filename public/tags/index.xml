@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Tags on Engineering Management Journey</title>
+    <link>http://localhost:1313/tags/</link>
+    <description>Recent content in Tags on Engineering Management Journey</description>
+    <generator>Hugo -- 0.147.9</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 20 Jan 2025 14:30:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Compensation</title>
+      <link>http://localhost:1313/tags/compensation/</link>
+      <pubDate>Mon, 20 Jan 2025 14:30:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/compensation/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Fairness</title>
+      <link>http://localhost:1313/tags/fairness/</link>
+      <pubDate>Mon, 20 Jan 2025 14:30:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/fairness/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Leadership</title>
+      <link>http://localhost:1313/tags/leadership/</link>
+      <pubDate>Mon, 20 Jan 2025 14:30:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/leadership/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Team-Dynamics</title>
+      <link>http://localhost:1313/tags/team-dynamics/</link>
+      <pubDate>Mon, 20 Jan 2025 14:30:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/team-dynamics/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Decision-Making</title>
+      <link>http://localhost:1313/tags/decision-making/</link>
+      <pubDate>Wed, 15 Jan 2025 10:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/decision-making/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Engineering-Management</title>
+      <link>http://localhost:1313/tags/engineering-management/</link>
+      <pubDate>Fri, 10 Jan 2025 09:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/engineering-management/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Introduction</title>
+      <link>http://localhost:1313/tags/introduction/</link>
+      <pubDate>Fri, 10 Jan 2025 09:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/tags/introduction/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>
