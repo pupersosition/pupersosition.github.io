@@ -19,16 +19,9 @@ Briefly about me: My professional path began in academic science, where I worked
 
 ## About This Blog
 
-This blog is dedicated to exploring the challenges, triumphs, and everyday realities of engineering management. From team dynamics to technical decision-making, from leadership lessons to personal growth - I'll be sharing my experiences and thoughts as I navigate this complex role.
+So, this blog will be dedicated to my attempts to build a working system and approach to the engineering manager profession. Unfortunately, I've developed the feeling that in our industry, the level of incompetence in this position is terrifyingly high. The most common and worst scenario is that the most senior engineer is appointed as manager, and he begins to lead based on "common sense." Lord, be merciful to people working under such a manager.
 
-## What to Expect
-
-I'll be writing about various aspects of engineering management including:
-- Team leadership and dynamics
-- Technical decision-making
-- Career development and growth
-- Management challenges and solutions
-- Personal reflections and lessons learned
+Let's see what comes of this. As the classic said, "Hell is paved with good intentions."
 
 ## Recent Posts
 
