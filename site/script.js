@@ -1,4 +1,4 @@
-const command = "cat nikita_vostrosablin_cv.txt";
+const command = document.querySelector(".prompt")?.dataset.command || "";
 const typedCommand = document.getElementById("typed-command");
 const themeToggle = document.getElementById("theme-toggle");
 const exportPdfButton = document.getElementById("export-pdf");

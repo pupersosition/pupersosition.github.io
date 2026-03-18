@@ -1,0 +1,7 @@
+{
+  "name": "walla-walla",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/compile-cv.mjs"
+  }
+}
