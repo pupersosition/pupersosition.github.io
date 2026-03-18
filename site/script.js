@@ -5,6 +5,7 @@ const exportPdfButton = document.getElementById("export-pdf");
 const cursorSwarm = document.getElementById("cursor-swarm");
 const codefield = document.getElementById("codefield");
 const THEME_KEY = "cv-theme";
+let refreshSwarmAccent = null;
 
 function typeCommand(text, target) {
   let i = 0;
@@ -258,13 +259,20 @@ function applyTheme(theme) {
   }
 }
 
+function getInitialTheme() {
+  try {
+    const storedTheme = localStorage.getItem(THEME_KEY);
+    if (storedTheme === "dark" || storedTheme === "light") {
+      return storedTheme;
+    }
+  } catch {
+    // Fall back to the system theme when storage is unavailable.
+  }
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
 function setupThemeToggle() {
-  const storedTheme = localStorage.getItem(THEME_KEY);
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const initialTheme = storedTheme || (prefersDark ? "dark" : "light");
-
-  applyTheme(initialTheme);
-
   if (!themeToggle) {
     return;
   }
@@ -287,7 +295,8 @@ function setupPdfExport() {
   });
 }
 
-const refreshSwarmAccent = setupCursorSwarm();
+applyTheme(getInitialTheme());
+refreshSwarmAccent = setupCursorSwarm();
 setupFlashlightBackground();
 setupPdfExport();
 setupThemeToggle();

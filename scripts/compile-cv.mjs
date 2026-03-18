@@ -314,6 +314,24 @@ function renderPage(frontmatter, blocks) {
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
+    <script>
+      (() => {
+        const key = "cv-theme";
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+        try {
+          const storedTheme = localStorage.getItem(key);
+          document.documentElement.dataset.theme =
+            storedTheme === "dark" || storedTheme === "light"
+              ? storedTheme
+              : prefersDark
+                ? "dark"
+                : "light";
+        } catch {
+          document.documentElement.dataset.theme = prefersDark ? "dark" : "light";
+        }
+      })();
+    </script>
     <link rel="stylesheet" href="./styles.css?v=${assetVersion}" />
   </head>
   <body>

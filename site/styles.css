@@ -103,7 +103,6 @@ body {
       rgb(var(--veil-rgb) / 0.84) calc(var(--spotlight-inner) + 4rem),
       rgb(var(--veil-rgb) / 0.98) calc(var(--spotlight-outer) + 2rem)
     );
-  transition: opacity 180ms ease;
 }
 
 :root[data-theme="light"][data-swarm="enabled"] .cursor-swarm {
