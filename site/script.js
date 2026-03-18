@@ -1,6 +1,7 @@
 const command = "cat nikita_vostrosablin_cv.txt";
 const typedCommand = document.getElementById("typed-command");
 const themeToggle = document.getElementById("theme-toggle");
+const exportPdfButton = document.getElementById("export-pdf");
 const THEME_KEY = "cv-theme";
 let refreshSwarmAccent = null;
 
@@ -203,7 +204,18 @@ function setupThemeToggle() {
   });
 }
 
+function setupPdfExport() {
+  if (!exportPdfButton) {
+    return;
+  }
+
+  exportPdfButton.addEventListener("click", () => {
+    window.print();
+  });
+}
+
 refreshSwarmAccent = setupCursorSwarm();
+setupPdfExport();
 setupThemeToggle();
 typeCommand(command, typedCommand);
 revealSections();

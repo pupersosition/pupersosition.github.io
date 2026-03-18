@@ -108,6 +108,28 @@ body {
   gap: 1rem;
 }
 
+.hero-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.export-pdf {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.78rem;
+  padding: 0.34rem 0.62rem;
+  cursor: pointer;
+}
+
+.export-pdf:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 .theme-toggle {
   appearance: none;
   border: 1px solid var(--line);
@@ -228,5 +250,47 @@ a {
 
   .grid-two {
     grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  :root,
+  :root[data-theme="dark"],
+  :root[data-theme="light"] {
+    --bg: #ffffff;
+    --text: #111111;
+    --muted: #444444;
+    --accent: #111111;
+    --line: #dddddd;
+    --surface-top: #ffffff;
+    --surface-bottom: #ffffff;
+    --link: #000000;
+    --shell-shadow: none;
+  }
+
+  body {
+    background: #ffffff;
+  }
+
+  .screen-noise,
+  .cursor-swarm,
+  .hero-actions {
+    display: none !important;
+  }
+
+  .cv-shell {
+    width: 100%;
+    margin: 0;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .section,
+  .role {
+    break-inside: avoid;
+  }
+
+  a {
+    text-decoration: none;
   }
 }
