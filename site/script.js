@@ -2,8 +2,9 @@ const command = "cat nikita_vostrosablin_cv.txt";
 const typedCommand = document.getElementById("typed-command");
 const themeToggle = document.getElementById("theme-toggle");
 const exportPdfButton = document.getElementById("export-pdf");
+const cursorSwarm = document.getElementById("cursor-swarm");
+const codefield = document.getElementById("codefield");
 const THEME_KEY = "cv-theme";
-let refreshSwarmAccent = null;
 
 function typeCommand(text, target) {
   let i = 0;
@@ -42,6 +43,70 @@ function revealSections() {
   });
 }
 
+function setupFlashlightBackground() {
+  if (!codefield) {
+    return;
+  }
+
+  function randomByte() {
+    return Math.floor(Math.random() * 256)
+      .toString(2)
+      .padStart(8, "0");
+  }
+
+  function buildCodefield() {
+    const rowCount = Math.ceil(window.innerHeight / 16) + 8;
+    const groupCount = Math.ceil(window.innerWidth / 88) + 6;
+    const rows = [];
+
+    for (let row = 0; row < rowCount; row += 1) {
+      const offset = (row * groupCount * 4).toString(16).padStart(4, "0");
+      const groups = [];
+
+      for (let column = 0; column < groupCount; column += 1) {
+        groups.push(randomByte());
+      }
+
+      rows.push(`${offset}  ${groups.join(" ")}`);
+    }
+
+    codefield.textContent = rows.join("\n");
+  }
+
+  buildCodefield();
+
+  let resizeTimer = 0;
+  window.addEventListener("resize", () => {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(buildCodefield, 120);
+  });
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return;
+  }
+
+  if (!window.matchMedia("(pointer: fine)").matches) {
+    return;
+  }
+
+  document.documentElement.dataset.flashlight = "enabled";
+
+  function updatePointer(x, y) {
+    document.documentElement.style.setProperty("--pointer-x", `${x}px`);
+    document.documentElement.style.setProperty("--pointer-y", `${y}px`);
+  }
+
+  updatePointer(window.innerWidth * 0.5, window.innerHeight * 0.32);
+
+  window.addEventListener(
+    "pointermove",
+    (event) => {
+      updatePointer(event.clientX, event.clientY);
+    },
+    { passive: true }
+  );
+}
+
 function setupCursorSwarm() {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     return null;
@@ -51,12 +116,11 @@ function setupCursorSwarm() {
     return null;
   }
 
-  const canvas = document.getElementById("cursor-swarm");
-  if (!canvas) {
+  if (!cursorSwarm) {
     return null;
   }
 
-  const ctx = canvas.getContext("2d");
+  const ctx = cursorSwarm.getContext("2d");
   if (!ctx) {
     return null;
   }
@@ -74,7 +138,7 @@ function setupCursorSwarm() {
     [1, -1],
     [-1, -1]
   ];
-  let accent = "#b8ff76";
+  let accent = "#2f7d40";
   let lastFrame = 0;
   let lastSpawn = 0;
 
@@ -89,10 +153,10 @@ function setupCursorSwarm() {
 
   function resize() {
     const dpr = window.devicePixelRatio || 1;
-    canvas.width = Math.floor(window.innerWidth * dpr);
-    canvas.height = Math.floor(window.innerHeight * dpr);
-    canvas.style.width = `${window.innerWidth}px`;
-    canvas.style.height = `${window.innerHeight}px`;
+    cursorSwarm.width = Math.floor(window.innerWidth * dpr);
+    cursorSwarm.height = Math.floor(window.innerHeight * dpr);
+    cursorSwarm.style.width = `${window.innerWidth}px`;
+    cursorSwarm.style.height = `${window.innerHeight}px`;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
@@ -127,45 +191,54 @@ function setupCursorSwarm() {
     const delta = timestamp - lastFrame;
     lastFrame = timestamp;
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, cursorSwarm.width, cursorSwarm.height);
     ctx.fillStyle = accent;
     ctx.textBaseline = "middle";
     ctx.textAlign = "center";
 
     for (let i = particles.length - 1; i >= 0; i -= 1) {
-      const p = particles[i];
-      p.x = snap(p.x + p.vx * (delta * 0.075));
-      p.y = snap(p.y + p.vy * (delta * 0.075));
-      p.life -= delta * 0.8;
+      const particle = particles[i];
+      particle.x = snap(particle.x + particle.vx * (delta * 0.075));
+      particle.y = snap(particle.y + particle.vy * (delta * 0.075));
+      particle.life -= delta * 0.8;
 
-      if (p.life <= 0) {
+      if (particle.life <= 0) {
         particles.splice(i, 1);
         continue;
       }
 
-      const ratio = p.life / p.maxLife;
+      const ratio = particle.life / particle.maxLife;
       const stepped = Math.ceil(ratio * 5) / 5;
-      const flicker = Math.sin(timestamp * 0.04 + p.flickerPhase) > 0 ? 1 : 0.55;
+      const flicker = Math.sin(timestamp * 0.04 + particle.flickerPhase) > 0 ? 1 : 0.55;
       ctx.globalAlpha = stepped * flicker * 0.9;
-      ctx.font = `${p.size}px "IBM Plex Mono", monospace`;
-      ctx.fillText(p.glyph, p.x, p.y);
+      ctx.font = `${particle.size}px "IBM Plex Mono", monospace`;
+      ctx.fillText(particle.glyph, particle.x, particle.y);
     }
 
     ctx.globalAlpha = 1;
     requestAnimationFrame(animate);
   }
 
-  window.addEventListener("mousemove", (event) => {
-    const now = performance.now();
-    if (now - lastSpawn < 12) {
-      return;
-    }
-    lastSpawn = now;
-    spawnCluster(event.clientX, event.clientY);
-  });
+  window.addEventListener(
+    "pointermove",
+    (event) => {
+      if (document.documentElement.dataset.theme !== "light") {
+        return;
+      }
+
+      const now = performance.now();
+      if (now - lastSpawn < 12) {
+        return;
+      }
+      lastSpawn = now;
+      spawnCluster(event.clientX, event.clientY);
+    },
+    { passive: true }
+  );
 
   window.addEventListener("resize", resize);
 
+  document.documentElement.dataset.swarm = "enabled";
   resize();
   updateAccent();
   requestAnimationFrame(animate);
@@ -214,7 +287,8 @@ function setupPdfExport() {
   });
 }
 
-refreshSwarmAccent = setupCursorSwarm();
+const refreshSwarmAccent = setupCursorSwarm();
+setupFlashlightBackground();
 setupPdfExport();
 setupThemeToggle();
 typeCommand(command, typedCommand);
