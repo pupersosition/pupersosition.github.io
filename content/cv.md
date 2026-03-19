@@ -1,6 +1,7 @@
 ---
 pageTitle: Nikita Vostrosablin | CV
 description: Nikita Vostrosablin, PhD - Engineering Manager focused on AI and distributed systems.
+pdfFileName: nikita-vostrosablin-cv.pdf
 promptPrefix: nikita@cv:~$
 promptCommand: cat nikita_vostrosablin_cv.txt
 name: Nikita Vostrosablin, PhD

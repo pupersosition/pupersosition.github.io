@@ -1,24 +1,36 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import puppeteer from "puppeteer";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
+const siteDir = path.join(rootDir, "site");
 const sourcePath = path.join(rootDir, "content", "cv.md");
-const outputPath = path.join(rootDir, "site", "index.html");
-const assetVersion = "20260318-4";
+const webOutputPath = path.join(siteDir, "index.html");
+const pdfStylesPath = path.join(siteDir, "pdf.css");
+const assetVersion = "20260319-1";
 
 async function main() {
   const source = await readFile(sourcePath, "utf8");
   const { frontmatter, body } = splitFrontmatter(source);
   const documentAst = parseDocument(body);
-  const html = renderPage(frontmatter, documentAst);
+  const pdfFileName = createPdfFileName(frontmatter);
+  const pdfSourceFileName = pdfFileName.replace(/\.pdf$/i, ".print.html");
+  const pdfOutputPath = path.join(siteDir, pdfFileName);
+  const pdfSourcePath = path.join(siteDir, pdfSourceFileName);
+  const html = renderPage(frontmatter, documentAst, { pdfFileName });
+  const pdfHtml = renderPdfPage(frontmatter, documentAst);
 
-  await mkdir(path.dirname(outputPath), { recursive: true });
-  await writeFile(outputPath, `${html}\n`, "utf8");
+  await mkdir(path.dirname(webOutputPath), { recursive: true });
+  await writeFile(webOutputPath, `${html}\n`, "utf8");
+  await writeFile(pdfSourcePath, `${pdfHtml}\n`, "utf8");
+  await renderPreparedPdf(pdfSourcePath, pdfOutputPath);
 
-  process.stdout.write(`Compiled ${path.relative(rootDir, outputPath)} from ${path.relative(rootDir, sourcePath)}\n`);
+  process.stdout.write(
+    `Compiled ${path.relative(rootDir, webOutputPath)}, ${path.relative(rootDir, pdfSourcePath)}, and ${path.relative(rootDir, pdfOutputPath)} from ${path.relative(rootDir, sourcePath)}\n`
+  );
 }
 
 function splitFrontmatter(source) {
@@ -293,10 +305,11 @@ function parseParagraph(lines, startIndex, options) {
   };
 }
 
-function renderPage(frontmatter, blocks) {
+function renderPage(frontmatter, blocks, options) {
   const promptPrefix = frontmatter.promptPrefix || "";
   const promptCommand = frontmatter.promptCommand || "";
   const promptPrefixHtml = promptPrefix ? `${escapeHtml(promptPrefix)} ` : "";
+  const pdfFileName = options.pdfFileName;
 
   return `<!doctype html>
 <html lang="en">
@@ -344,7 +357,15 @@ function renderPage(frontmatter, blocks) {
         <div class="hero-top">
           <p class="prompt" data-command="${escapeAttribute(promptCommand)}">${promptPrefixHtml}<span id="typed-command"></span></p>
           <div class="hero-actions">
-            <button id="export-pdf" class="export-pdf" type="button">Export PDF</button>
+            <button
+              id="export-pdf"
+              class="export-pdf"
+              type="button"
+              data-pdf-href="./${escapeAttribute(pdfFileName)}"
+              data-pdf-filename="${escapeAttribute(pdfFileName)}"
+            >
+              Download PDF
+            </button>
             <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme">
               <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="12" cy="12" r="4"></circle>
@@ -371,6 +392,62 @@ ${blocks.map(renderTopLevelBlock).join("\n")}
     </main>
 
     <script src="./script.js?v=${assetVersion}"></script>
+  </body>
+</html>`;
+}
+
+function renderPdfPage(frontmatter, blocks) {
+  const pdfSections = planPdfSections(blocks);
+
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>${escapeHtml(frontmatter.pageTitle || "CV")} PDF</title>
+    <meta
+      name="description"
+      content="${escapeAttribute(frontmatter.description || "")}"
+    />
+    <link rel="stylesheet" href="./${path.basename(pdfStylesPath)}?v=${assetVersion}" />
+  </head>
+  <body>
+    <main class="pdf-page">
+      <header class="pdf-header">
+        <div>
+          <p class="pdf-eyebrow">Curriculum Vitae</p>
+          <h1>${escapeHtml(frontmatter.name || "")}</h1>
+          <p class="pdf-subtitle">${escapeHtml(frontmatter.subtitle || "")}</p>
+          <p class="pdf-location">${escapeHtml(frontmatter.location || "")}</p>
+        </div>
+        ${pdfSections.contact ? renderPdfContact(pdfSections.contact) : ""}
+      </header>
+
+      <section class="pdf-overview">
+        ${
+          pdfSections.summary.length
+            ? `<div class="pdf-card-grid">
+${pdfSections.summary.map((section) => renderPdfSummaryCard(section)).join("\n")}
+          </div>`
+            : '<div class="pdf-card-grid pdf-card-grid--empty"></div>'
+        }
+        ${
+          pdfSections.highlights
+            ? renderPdfHighlights(pdfSections.highlights)
+            : ""
+        }
+      </section>
+
+      <section class="pdf-content">
+        <div class="pdf-main">
+          ${pdfSections.experience ? renderPdfExperience(pdfSections.experience) : ""}
+${pdfSections.mainSections.map((section) => renderPdfContentSection(section)).join("\n")}
+        </div>
+        <aside class="pdf-sidebar">
+${pdfSections.sidebarSections.map((section) => renderPdfSidebarSection(section)).join("\n")}
+        </aside>
+      </section>
+    </main>
   </body>
 </html>`;
 }
@@ -450,6 +527,309 @@ function renderList(items, indent) {
   return `${indent}<ul>
 ${items.map((item) => `${indent}  <li>${renderInline(item)}</li>`).join("\n")}
 ${indent}</ul>`;
+}
+
+function planPdfSections(blocks) {
+  const sections = flattenSections(blocks);
+  const take = (title, type = "section") => {
+    const index = sections.findIndex((section) => section.type === type && section.title === title);
+
+    if (index === -1) {
+      return null;
+    }
+
+    return sections.splice(index, 1)[0];
+  };
+
+  const contact = take("Contact");
+  const topSkills = take("Top Skills");
+  const experience = take("Experience", "experience");
+  const education = take("Education");
+  const languages = take("Languages");
+  const certifications = take("Certifications");
+  const publications = take("Selected Publications");
+  const summary = [topSkills].filter(Boolean);
+  const sidebarSections = [education, languages, certifications, publications].filter(Boolean);
+  const mainSections = sections.filter((section) => section.type === "section");
+  const highlights = mainSections.shift() || buildPdfHighlightsSection(experience);
+
+  return {
+    contact,
+    experience,
+    highlights,
+    summary,
+    mainSections,
+    sidebarSections
+  };
+}
+
+function flattenSections(blocks) {
+  const sections = [];
+
+  for (const block of blocks) {
+    if (block.type === "columns") {
+      sections.push(...block.sections);
+      continue;
+    }
+
+    sections.push(block);
+  }
+
+  return sections;
+}
+
+function renderPdfContact(section) {
+  return `        <div class="pdf-contact">
+          <p class="pdf-contact-label">${escapeHtml(section.title)}</p>
+${renderPdfList(section.blocks[0]?.items || [], "          ", "pdf-contact-list")}
+        </div>`;
+}
+
+function renderPdfSummaryCard(section) {
+  return `            <section class="pdf-card">
+              <p class="pdf-card-label">${escapeHtml(section.title)}</p>
+${renderPdfBlocks(section.blocks, "              ")}
+            </section>`;
+}
+
+function renderPdfHighlights(section) {
+  return `        <section class="pdf-card">
+          <p class="pdf-card-label">${escapeHtml(section.title)}</p>
+${renderPdfBlocks(section.blocks, "          ")}
+        </section>`;
+}
+
+function buildPdfHighlightsSection(experience) {
+  if (!experience) {
+    return null;
+  }
+
+  const lead = findFirstParagraph(experience.roles);
+  const items = collectHighlightItems(experience.roles);
+  const blocks = [];
+
+  if (lead) {
+    blocks.push({
+      type: "paragraph",
+      text: lead
+    });
+  }
+
+  if (items.length) {
+    blocks.push({
+      type: "list",
+      items
+    });
+  }
+
+  if (!blocks.length) {
+    return null;
+  }
+
+  return {
+    type: "section",
+    title: "Professional Focus",
+    blocks
+  };
+}
+
+function findFirstParagraph(roles) {
+  for (const role of roles) {
+    for (const block of role.blocks) {
+      if (block.type === "paragraph") {
+        return block.text;
+      }
+    }
+  }
+
+  return "";
+}
+
+function collectHighlightItems(roles) {
+  const seen = new Set();
+  const items = [];
+
+  for (const role of roles) {
+    for (const block of role.blocks) {
+      if (block.type !== "list") {
+        continue;
+      }
+
+      for (const item of block.items) {
+        const key = item.toLowerCase();
+
+        if (seen.has(key)) {
+          continue;
+        }
+
+        seen.add(key);
+        items.push(item);
+
+        if (items.length === 3) {
+          return items;
+        }
+      }
+    }
+  }
+
+  return items;
+}
+
+function renderPdfExperience(block) {
+  return `          <section class="pdf-section pdf-section--experience">
+            <h2>${escapeHtml(block.title)}</h2>
+${block.roles.map((role) => renderPdfRole(role)).join("\n")}
+          </section>`;
+}
+
+function renderPdfRole(role) {
+  const entries = groupRoleEntries(role.blocks);
+
+  return `            <article class="pdf-role">
+              <h3 class="pdf-company">${escapeHtml(role.company)}</h3>
+${entries.map((entry) => renderPdfRoleEntry(entry)).join("\n")}
+            </article>`;
+}
+
+function groupRoleEntries(blocks) {
+  const entries = [];
+  let current = null;
+
+  for (const block of blocks) {
+    if (block.type === "meta") {
+      if (current) {
+        entries.push(current);
+      }
+
+      current = {
+        meta: block.text,
+        blocks: []
+      };
+      continue;
+    }
+
+    if (!current) {
+      current = { meta: "", blocks: [] };
+    }
+
+    current.blocks.push(block);
+  }
+
+  if (current) {
+    entries.push(current);
+  }
+
+  return entries;
+}
+
+function renderPdfRoleEntry(entry) {
+  const meta = splitMeta(entry.meta);
+
+  return `              <section class="pdf-role-entry">
+                <div class="pdf-role-meta">
+                  <div>
+                    <p class="pdf-role-title">${escapeHtml(meta.title)}</p>
+                    ${meta.location ? `<p class="pdf-role-location">${escapeHtml(meta.location)}</p>` : ""}
+                  </div>
+                  ${meta.period ? `<p class="pdf-role-period">${escapeHtml(meta.period)}</p>` : ""}
+                </div>
+${renderPdfBlocks(entry.blocks, "                ")}
+              </section>`;
+}
+
+function splitMeta(value) {
+  const parts = value.split("|").map((part) => part.trim()).filter(Boolean);
+
+  return {
+    title: parts[0] || "",
+    period: parts[1] || "",
+    location: parts.slice(2).join(" | ")
+  };
+}
+
+function renderPdfContentSection(section) {
+  return `          <section class="pdf-section">
+            <h2>${escapeHtml(section.title)}</h2>
+${renderPdfBlocks(section.blocks, "            ")}
+          </section>`;
+}
+
+function renderPdfSidebarSection(section) {
+  return `          <section class="pdf-section pdf-section--sidebar">
+            <h2>${escapeHtml(section.title)}</h2>
+${renderPdfBlocks(section.blocks, "            ")}
+          </section>`;
+}
+
+function renderPdfBlocks(blocks, indent) {
+  return blocks
+    .map((block) => {
+      if (block.type === "paragraph") {
+        return `${indent}<p class="pdf-paragraph">${renderInline(block.text)}</p>`;
+      }
+
+      if (block.type === "list") {
+        return renderPdfList(block.items, indent, "pdf-list");
+      }
+
+      throw new Error(`Unsupported PDF block type: ${block.type}`);
+    })
+    .join("\n");
+}
+
+function renderPdfList(items, indent, className) {
+  return `${indent}<ul class="${className}">
+${items.map((item) => `${indent}  <li>${renderInline(item)}</li>`).join("\n")}
+${indent}</ul>`;
+}
+
+async function renderPreparedPdf(inputPath, outputPath) {
+  const browser = await puppeteer.launch({ headless: true });
+
+  try {
+    const page = await browser.newPage();
+    await page.goto(pathToFileURL(inputPath).href, { waitUntil: "load" });
+    await page.emulateMediaType("print");
+    await page.pdf({
+      path: outputPath,
+      printBackground: true,
+      preferCSSPageSize: true
+    });
+  } finally {
+    await browser.close();
+  }
+}
+
+function createPdfFileName(frontmatter) {
+  const explicit = sanitizePdfFileName(frontmatter.pdfFileName || "");
+
+  if (explicit) {
+    return explicit;
+  }
+
+  const base = slugify(frontmatter.name || "cv").replace(/-phd\b/, "");
+  return `${base || "cv"}-cv.pdf`;
+}
+
+function sanitizePdfFileName(value) {
+  const normalized = value
+    .trim()
+    .replace(/\.pdf$/i, "")
+    .replace(/[^a-z0-9._-]+/gi, "-")
+    .replace(/-+/g, "-")
+    .replace(/^[-_.]+|[-_.]+$/g, "");
+
+  return normalized ? `${normalized}.pdf` : "";
+}
+
+function slugify(value) {
+  return value
+    .normalize("NFKD")
+    .replace(/[^\w\s-]/g, "")
+    .trim()
+    .replace(/[_\s]+/g, "-")
+    .replace(/-+/g, "-")
+    .toLowerCase();
 }
 
 function renderInline(text, options = {}) {

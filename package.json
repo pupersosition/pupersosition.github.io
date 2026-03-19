@@ -3,5 +3,8 @@
   "private": true,
   "scripts": {
     "build": "node scripts/compile-cv.mjs"
+  },
+  "devDependencies": {
+    "puppeteer": "^24.40.0"
   }
 }
