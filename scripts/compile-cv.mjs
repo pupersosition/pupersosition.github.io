@@ -10,7 +10,7 @@ const siteDir = path.join(rootDir, "site");
 const sourcePath = path.join(rootDir, "content", "cv.md");
 const webOutputPath = path.join(siteDir, "index.html");
 const pdfStylesPath = path.join(siteDir, "pdf.css");
-const assetVersion = "20260319-1";
+const assetVersion = "20260320-2";
 
 async function main() {
   const source = await readFile(sourcePath, "utf8");
