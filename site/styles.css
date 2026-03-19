@@ -12,6 +12,14 @@
   --shell-shadow: 0 0 0 1px rgba(184, 255, 118, 0.05), 0 20px 60px rgba(0, 0, 0, 0.45);
   --veil-rgb: 5 7 8;
   --code-rgb: 184 255 118;
+  --pdf-glow-start-rgb: 143 255 94;
+  --pdf-glow-end-rgb: 255 191 71;
+  --pdf-button-shell-top-rgb: 10 18 10;
+  --pdf-button-shell-bottom-rgb: 4 8 5;
+  --pdf-button-text: #d8ffb1;
+  --pdf-glow-shadow:
+    0 0 18px rgb(143 255 94 / 0.24),
+    0 0 34px rgb(255 191 71 / 0.12);
   --pointer-x: 50vw;
   --pointer-y: 50vh;
   --spotlight-inner: 5rem;
@@ -32,6 +40,14 @@
   --shell-shadow: 0 0 0 1px rgba(20, 32, 43, 0.05), 0 12px 30px rgba(49, 69, 87, 0.1);
   --veil-rgb: 229 235 230;
   --code-rgb: 47 125 64;
+  --pdf-glow-start-rgb: 58 128 53;
+  --pdf-glow-end-rgb: 168 121 38;
+  --pdf-button-shell-top-rgb: 236 243 231;
+  --pdf-button-shell-bottom-rgb: 203 214 198;
+  --pdf-button-text: #17311b;
+  --pdf-glow-shadow:
+    0 0 14px rgb(58 128 53 / 0.14),
+    0 0 24px rgb(168 121 38 / 0.08);
 }
 
 * {
@@ -177,18 +193,88 @@ body {
 
 .export-pdf {
   appearance: none;
-  border: 1px solid var(--line);
-  background: transparent;
-  color: var(--text);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgb(var(--pdf-glow-start-rgb) / 0.58);
+  border-radius: 0;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      rgb(var(--pdf-glow-start-rgb) / 0.12) 0 1px,
+      transparent 1px 3px
+    ),
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgb(var(--pdf-glow-start-rgb) / 0.08) 34%,
+      rgb(var(--pdf-glow-start-rgb) / 0.38) 46%,
+      rgb(var(--pdf-glow-end-rgb) / 0.55) 50%,
+      rgb(var(--pdf-glow-start-rgb) / 0.3) 54%,
+      rgb(var(--pdf-glow-start-rgb) / 0.08) 66%,
+      transparent 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgb(var(--pdf-button-shell-top-rgb) / 0.98) 0%,
+      rgb(var(--pdf-button-shell-bottom-rgb) / 0.98) 100%
+    );
+  background-size:
+    100% 100%,
+    220% 100%,
+    100% 100%;
+  background-position:
+    0 0,
+    -140% 0,
+    0 0;
+  color: var(--pdf-button-text);
+  box-shadow:
+    inset 0 0 0 1px rgb(var(--pdf-glow-start-rgb) / 0.18),
+    inset 0 0 18px rgb(var(--pdf-glow-start-rgb) / 0.08),
+    var(--pdf-glow-shadow);
   font: inherit;
   font-size: 0.78rem;
-  padding: 0.34rem 0.62rem;
+  letter-spacing: 0.08em;
+  padding: 0.42rem 0.86rem;
   cursor: pointer;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgb(var(--pdf-glow-start-rgb) / 0.28);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+  animation: export-pdf-sweep 2.8s linear infinite;
 }
 
-.export-pdf:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+.export-pdf:hover,
+.export-pdf:focus-visible {
+  border-color: rgb(var(--pdf-glow-end-rgb) / 0.74);
+  box-shadow:
+    inset 0 0 0 1px rgb(var(--pdf-glow-end-rgb) / 0.25),
+    inset 0 0 22px rgb(var(--pdf-glow-start-rgb) / 0.12),
+    0 0 24px rgb(var(--pdf-glow-start-rgb) / 0.24),
+    0 0 40px rgb(var(--pdf-glow-end-rgb) / 0.14);
+  transform: translateY(-1px);
+}
+
+.export-pdf:focus-visible {
+  outline: 2px solid rgb(var(--pdf-glow-end-rgb) / 0.44);
+  outline-offset: 2px;
+}
+
+@keyframes export-pdf-sweep {
+  from {
+    background-position:
+      0 0,
+      -140% 0,
+      0 0;
+  }
+
+  to {
+    background-position:
+      0 0,
+      140% 0,
+      0 0;
+  }
 }
 
 .theme-toggle {
