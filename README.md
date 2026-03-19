@@ -5,9 +5,12 @@ This site is generated from markdown.
 ## Files
 
 - `content/cv.md`: editable CV content
-- `scripts/compile-cv.mjs`: markdown-to-HTML compiler
-- `site/index.html`: generated output
+- `scripts/compile-cv.mjs`: markdown-to-HTML-and-PDF compiler
+- `site/index.html`: generated interactive page
+- `site/*.print.html`: generated PDF source page
+- `site/*.pdf`: generated downloadable PDF
 - `site/styles.css`: existing styles
+- `site/pdf.css`: PDF-specific styles
 - `site/script.js`: existing interaction and animation logic
 
 ## Build
@@ -19,10 +22,11 @@ Requirements:
 Command:
 
 ```bash
+npm install
 npm run build
 ```
 
-That reads `content/cv.md` and rewrites `site/index.html`.
+That reads `content/cv.md` and rewrites `site/index.html`, a print-ready HTML source, and a prepared PDF download.
 
 ## Edit Content
 
@@ -40,6 +44,7 @@ Frontmatter at the top controls page metadata and hero content:
 ---
 pageTitle: Your Name | CV
 description: Short page description
+pdfFileName: your-name-cv.pdf
 promptPrefix: yourname@cv:~$
 promptCommand: cat your_cv.txt
 name: Your Name
@@ -82,5 +87,6 @@ Paragraph text.
 
 ## Notes
 
-- Keep `site/index.html` generated. Edit `content/cv.md` instead.
+- Keep generated files in `site/` generated. Edit `content/cv.md` instead.
 - The current CSS and JS effects are preserved by keeping the same generated DOM structure.
+- `pdfFileName` is optional. If omitted, the builder derives a safe filename from `name`.

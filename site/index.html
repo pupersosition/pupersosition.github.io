@@ -32,7 +32,7 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="./styles.css?v=20260318-4" />
+    <link rel="stylesheet" href="./styles.css?v=20260319-1" />
   </head>
   <body>
     <div class="screen-noise" aria-hidden="true"></div>
@@ -44,7 +44,15 @@
         <div class="hero-top">
           <p class="prompt" data-command="cat nikita_vostrosablin_cv.txt">nikita@cv:~$ <span id="typed-command"></span></p>
           <div class="hero-actions">
-            <button id="export-pdf" class="export-pdf" type="button">Export PDF</button>
+            <button
+              id="export-pdf"
+              class="export-pdf"
+              type="button"
+              data-pdf-href="./nikita-vostrosablin-cv.pdf"
+              data-pdf-filename="nikita-vostrosablin-cv.pdf"
+            >
+              Download PDF
+            </button>
             <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme">
               <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="12" cy="12" r="4"></circle>
@@ -184,6 +192,6 @@
       </section>
     </main>
 
-    <script src="./script.js?v=20260318-4"></script>
+    <script src="./script.js?v=20260319-1"></script>
   </body>
 </html>

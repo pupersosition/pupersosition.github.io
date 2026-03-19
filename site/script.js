@@ -291,7 +291,21 @@ function setupPdfExport() {
   }
 
   exportPdfButton.addEventListener("click", () => {
-    window.print();
+    const pdfHref = exportPdfButton.dataset.pdfHref;
+    const pdfFilename = exportPdfButton.dataset.pdfFilename;
+
+    if (!pdfHref) {
+      return;
+    }
+
+    const link = document.createElement("a");
+    link.href = pdfHref;
+    if (pdfFilename) {
+      link.download = pdfFilename;
+    }
+    document.body.append(link);
+    link.click();
+    link.remove();
   });
 }
 

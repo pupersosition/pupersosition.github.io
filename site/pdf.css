@@ -1,0 +1,257 @@
+@page {
+  size: A4;
+  margin: 14mm;
+}
+
+:root {
+  --ink: #15211d;
+  --muted: #5b6d66;
+  --accent: #1f6b57;
+  --line: #d7e0da;
+  --surface: #f3f7f4;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Aptos", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  color: var(--ink);
+  background: #ffffff;
+  line-height: 1.45;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+p,
+ul {
+  margin: 0;
+}
+
+.pdf-page {
+  width: 182mm;
+  min-height: 269mm;
+  margin: 0 auto;
+  background: #ffffff;
+}
+
+.pdf-header {
+  display: grid;
+  gap: 8mm;
+  grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+  padding-bottom: 7mm;
+  border-bottom: 2px solid var(--accent);
+}
+
+.pdf-eyebrow,
+.pdf-card-label,
+.pdf-contact-label,
+.pdf-section h2 {
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.pdf-eyebrow {
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 700;
+  margin-bottom: 3mm;
+}
+
+.pdf-header h1 {
+  font-family: "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+  font-size: 29px;
+  line-height: 1.03;
+  margin-bottom: 2.5mm;
+}
+
+.pdf-subtitle {
+  font-size: 12.5px;
+  font-weight: 600;
+  margin-bottom: 1.4mm;
+}
+
+.pdf-location {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.pdf-contact {
+  align-self: end;
+}
+
+.pdf-contact-label {
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 700;
+  margin-bottom: 2mm;
+}
+
+.pdf-contact-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 1.4mm;
+  font-size: 11px;
+}
+
+.pdf-overview {
+  display: grid;
+  gap: 6mm;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  margin-top: 7mm;
+}
+
+.pdf-card-grid {
+  display: grid;
+  gap: 4mm;
+}
+
+.pdf-card-grid--empty {
+  display: none;
+}
+
+.pdf-card {
+  padding: 0;
+}
+
+.pdf-card-label {
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 700;
+  margin-bottom: 2.4mm;
+}
+
+.pdf-content {
+  display: block;
+  margin-top: 7mm;
+}
+
+.pdf-main,
+.pdf-sidebar {
+  display: block;
+}
+
+.pdf-section {
+  break-inside: auto;
+}
+
+.pdf-section + .pdf-section {
+  margin-top: 6mm;
+}
+
+.pdf-section h2 {
+  color: var(--accent);
+  font-size: 10.5px;
+  font-weight: 700;
+  margin-bottom: 3.4mm;
+}
+
+.pdf-section--sidebar {
+  padding: 0;
+}
+
+.pdf-sidebar {
+  margin-top: 6mm;
+}
+
+.pdf-role {
+  break-inside: avoid;
+  padding-bottom: 4.5mm;
+  margin-bottom: 4.5mm;
+  border-bottom: 1px solid var(--line);
+}
+
+.pdf-role:last-child {
+  border-bottom: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.pdf-company {
+  font-size: 14.8px;
+  margin-bottom: 2.8mm;
+}
+
+.pdf-role-entry + .pdf-role-entry {
+  margin-top: 4mm;
+  padding-top: 4mm;
+  border-top: 1px dashed var(--line);
+}
+
+.pdf-role-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 4mm;
+  margin-bottom: 1.8mm;
+}
+
+.pdf-role-title {
+  font-size: 11.2px;
+  font-weight: 700;
+}
+
+.pdf-role-period,
+.pdf-role-location {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.pdf-role-period {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.pdf-role-location {
+  margin-top: 0.8mm;
+}
+
+.pdf-paragraph {
+  color: var(--ink);
+  font-size: 10.35px;
+  margin-bottom: 2.2mm;
+}
+
+.pdf-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+.pdf-list {
+  padding-left: 4.4mm;
+  display: grid;
+  gap: 1.2mm;
+  font-size: 10.2px;
+}
+
+.pdf-list li,
+.pdf-contact-list li {
+  break-inside: avoid;
+}
+
+strong {
+  font-weight: 700;
+}
+
+@media screen {
+  body {
+    padding: 10mm 0;
+  }
+
+  .pdf-page {
+    box-shadow: 0 18px 48px rgba(16, 27, 23, 0.08);
+  }
+}
