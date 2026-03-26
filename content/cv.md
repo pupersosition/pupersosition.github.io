@@ -80,13 +80,27 @@ Lead a team of 9–12 engineers (predominantly mid-level, ~20% senior) owning a 
 - Core contributor to multi-team architecture design for a large-scale streaming platform
 
 #### Senior Software Engineer, Team Lead | Dec 2023 - Jul 2025
-Led a sub-team delivering machine-learning products for Opta Vision. Built event-driven AWS architecture, microservices on Kubernetes, and a CI/CD-focused delivery model for stable and fast production deployments.
+Acted as technical lead for a 4-engineer sub-team responsible for productionizing ML pipelines and distributed systems for the Opta Vision platform, delivering AI-driven metrics across multiple competitions.
 
-- Kubernetes (K8s), Apache Kafka, AWS event-driven workloads
-- Microservices and event-driven architecture design
-- Planning, stakeholder communication, and architecture reviews
+##### Key Contributions
 
-### MSD Czech Republic
+- Designed and implemented multiple event-driven pipelines and services generating real-time and post-game metrics
+  - (Scale of the systems is described in the EM section above) 
+- Rebuilt underperforming pipelines, removing architectural bottlenecks and improving throughput
+- Identified and fixed critical inefficiencies in DynamoDB usage:
+  - redesigned schema to eliminate expensive scan operations
+  - achieved significant cost reduction and performance improvement
+- Led migration of compute workloads from AWS-managed services to Kubernetes as part of a cost optimization initiative
+
+##### Technical Leadership
+
+- Drove architecture decisions
+- Mentored engineers
+- Introduced design-first development (design docs), improving alignment and reducing rework
+- Participated in hiring processes
+
+
+### Merck (MSD Czech Republic)
 #### Scientific Software Engineer, Team Lead | Jul 2021 - Nov 2023 | Prague, Czechia
 - Developed advanced algorithms for scientific and bioinformatics applications
 - Contributed to a patented reaction-pathfinder system (US Patent: 20240105285)
@@ -122,10 +136,10 @@ Worked on quantum optomechanics research with focus on theoretical foundations o
 - **Lomonosov Moscow State University (MSU)**<br />Master of Science, Physics (2008 - 2014)
 
 ## Languages
-- Russian (Native or Bilingual)
-- English (Professional Working)
+- Russian (Native)
+- English (Fluent, Professional Working)
 - French (Limited Working)
-- Czech (Elementary)
+- Czech (Intermediate)
 :::
 
 ::: columns
