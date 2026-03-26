@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
 const sourcePath = path.join(rootDir, "content", "cv.md");
 const outputPath = path.join(rootDir, "site", "index.html");
-const assetVersion = "20260318-4";
+const assetVersion = "20260326-2";
 
 async function main() {
   const source = await readFile(sourcePath, "utf8");
@@ -202,6 +202,15 @@ function parseContentBlocks(lines, startIndex, options) {
       continue;
     }
 
+    if (options.roleMode && lines[index].startsWith("##### ")) {
+      blocks.push({
+        type: "subsection",
+        text: lines[index].slice(6).trim()
+      });
+      index += 1;
+      continue;
+    }
+
     if (lines[index].startsWith("- ")) {
       const result = parseList(lines, index, options);
       blocks.push(result.block);
@@ -223,6 +232,7 @@ function parseList(lines, startIndex, options) {
 
   while (index < lines.length && lines[index].startsWith("- ")) {
     const fragments = [lines[index].slice(2).trim()];
+    const subItems = [];
     index += 1;
 
     while (index < lines.length) {
@@ -230,12 +240,22 @@ function parseList(lines, startIndex, options) {
         break;
       }
 
-      if (options.roleMode && (lines[index].startsWith("### ") || lines[index].startsWith("#### "))) {
+      if (
+        options.roleMode &&
+        (lines[index].startsWith("### ") || lines[index].startsWith("#### ") || lines[index].startsWith("##### "))
+      ) {
         break;
       }
 
       if (lines[index].startsWith("- ")) {
         break;
+      }
+
+      const nestedMatch = lines[index].match(/^\s{2,}-\s+(.+)$/);
+      if (nestedMatch) {
+        subItems.push(nestedMatch[1].trim());
+        index += 1;
+        continue;
       }
 
       if (!/^\s{2,}\S/.test(lines[index]) && !/^\t/.test(lines[index])) {
@@ -246,7 +266,7 @@ function parseList(lines, startIndex, options) {
       index += 1;
     }
 
-    items.push(fragments.join("\n"));
+    items.push({ text: fragments.join("\n"), subItems });
 
     while (index < lines.length && isBlank(lines[index])) {
       index += 1;
@@ -275,7 +295,10 @@ function parseParagraph(lines, startIndex, options) {
       break;
     }
 
-    if (options.roleMode && (lines[index].startsWith("### ") || lines[index].startsWith("#### "))) {
+    if (
+      options.roleMode &&
+      (lines[index].startsWith("### ") || lines[index].startsWith("#### ") || lines[index].startsWith("##### "))
+    ) {
       break;
     }
 
@@ -322,11 +345,11 @@ function renderPage(frontmatter, blocks) {
     <div id="codefield" class="codefield" aria-hidden="true"></div>
     <div class="code-shroud" aria-hidden="true"></div>
     <main class="cv-shell">
-      <header class="hero section reveal">
+      <header class="hero section">
         <div class="hero-top">
           <p class="prompt" data-command="${escapeAttribute(promptCommand)}">${promptPrefixHtml}<span id="typed-command"></span></p>
           <div class="hero-actions">
-            <button id="export-pdf" class="export-pdf" type="button">Export PDF</button>
+            <a id="export-pdf" class="export-pdf" href="./cv.pdf" target="_blank" rel="noopener">Export PDF</a>
             <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme">
               <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="12" cy="12" r="4"></circle>
@@ -359,20 +382,20 @@ ${blocks.map(renderTopLevelBlock).join("\n")}
 
 function renderTopLevelBlock(block) {
   if (block.type === "columns") {
-    return `      <section class="section reveal grid-two">
+    return `      <section class="section grid-two">
 ${block.sections.map((section) => renderColumn(section)).join("\n")}
       </section>`;
   }
 
   if (block.type === "experience") {
-    return `      <section class="section reveal">
+    return `      <section class="section">
         <h2>${escapeHtml(block.title)}</h2>
 
 ${block.roles.map(renderRole).join("\n\n")}
       </section>`;
   }
 
-  return `      <section class="section reveal">
+  return `      <section class="section">
         <h2>${escapeHtml(block.title)}</h2>
 ${renderGenericBlocks(block.blocks, "        ")}
       </section>`;
@@ -397,6 +420,10 @@ function renderRoleBlocks(blocks) {
     .map((block) => {
       if (block.type === "meta") {
         return `          <p class="meta">${renderInline(block.text)}</p>`;
+      }
+
+      if (block.type === "subsection") {
+        return `          <h4 class="role-subsection">${renderInline(block.text)}</h4>`;
       }
 
       if (block.type === "paragraph") {
@@ -430,7 +457,21 @@ function renderGenericBlocks(blocks, indent) {
 
 function renderList(items, indent) {
   return `${indent}<ul>
-${items.map((item) => `${indent}  <li>${renderInline(item)}</li>`).join("\n")}
+${items
+  .map((item) => {
+    if (typeof item === "string") {
+      return `${indent}  <li>${renderInline(item)}</li>`;
+    }
+
+    const nestedHtml = item.subItems.length
+      ? `\n${indent}    <ul>\n${item.subItems
+          .map((subItem) => `${indent}      <li>${renderInline(subItem)}</li>`)
+          .join("\n")}\n${indent}    </ul>`
+      : "";
+
+    return `${indent}  <li>${renderInline(item.text)}${nestedHtml}</li>`;
+  })
+  .join("\n")}
 ${indent}</ul>`;
 }
 

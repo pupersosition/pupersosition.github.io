@@ -1,10 +1,11 @@
 const command = document.querySelector(".prompt")?.dataset.command || "";
 const typedCommand = document.getElementById("typed-command");
 const themeToggle = document.getElementById("theme-toggle");
-const exportPdfButton = document.getElementById("export-pdf");
 const cursorSwarm = document.getElementById("cursor-swarm");
 const codefield = document.getElementById("codefield");
 const THEME_KEY = "cv-theme";
+const pdfMode = new URLSearchParams(window.location.search).get("pdf") === "1";
+let refreshSwarmAccent = null;
 
 function typeCommand(text, target) {
   let i = 0;
@@ -21,26 +22,6 @@ function typeCommand(text, target) {
       clearInterval(interval);
     }
   }, 42);
-}
-
-function revealSections() {
-  const sections = document.querySelectorAll(".reveal");
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.15 }
-  );
-
-  sections.forEach((section, index) => {
-    section.style.transitionDelay = `${index * 65}ms`;
-    observer.observe(section);
-  });
 }
 
 function setupFlashlightBackground() {
@@ -277,19 +258,14 @@ function setupThemeToggle() {
   });
 }
 
-function setupPdfExport() {
-  if (!exportPdfButton) {
-    return;
+if (pdfMode) {
+  applyTheme("light");
+  if (typedCommand) {
+    typedCommand.textContent = command;
   }
-
-  exportPdfButton.addEventListener("click", () => {
-    window.print();
-  });
+} else {
+  refreshSwarmAccent = setupCursorSwarm();
+  setupFlashlightBackground();
+  setupThemeToggle();
+  typeCommand(command, typedCommand);
 }
-
-const refreshSwarmAccent = setupCursorSwarm();
-setupFlashlightBackground();
-setupPdfExport();
-setupThemeToggle();
-typeCommand(command, typedCommand);
-revealSections();

@@ -184,6 +184,9 @@ body {
   font: inherit;
   font-size: 0.78rem;
   padding: 0.34rem 0.62rem;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -247,6 +250,16 @@ h3 {
   font-size: 1.06rem;
 }
 
+.role-subsection {
+  margin: 1.05rem 0 0.35rem;
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0.9;
+}
+
 p {
   margin: 0.45rem 0 0.85rem;
 }
@@ -287,17 +300,6 @@ a {
   opacity: 0.07;
 }
 
-.reveal {
-  opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.45s ease, transform 0.45s ease;
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 @media (max-width: 800px) {
   :root {
     --spotlight-inner: 4rem;
@@ -321,6 +323,11 @@ a {
 }
 
 @media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
   :root,
   :root[data-theme="dark"],
   :root[data-theme="light"] {
@@ -337,12 +344,15 @@ a {
 
   body {
     background: #ffffff;
+    font-size: 10.5px;
+    line-height: 1.45;
   }
 
   .screen-noise,
   .cursor-swarm,
   .codefield,
   .code-shroud,
+  .prompt,
   .hero-actions {
     display: none !important;
   }
@@ -352,11 +362,39 @@ a {
     margin: 0;
     border: 0;
     box-shadow: none;
+    font-size: 10.5px;
   }
 
   .section,
   .role {
-    break-inside: avoid;
+    break-inside: auto;
+  }
+
+  .grid-two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  h2,
+  h3,
+  h4,
+  .meta {
+    break-after: avoid-page;
+  }
+
+  h2 {
+    font-size: 0.9rem;
+  }
+
+  .role-subsection {
+    font-size: 0.5rem;
+    letter-spacing: 0.07em;
+    color: #4a4a4a;
+  }
+
+  .meta {
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    color: #595959;
   }
 
   a {

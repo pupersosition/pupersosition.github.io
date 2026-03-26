@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260318-4" />
+    <link rel="stylesheet" href="./styles.css?v=20260326-2" />
   </head>
   <body>
     <div class="screen-noise" aria-hidden="true"></div>
@@ -22,11 +22,11 @@
     <div id="codefield" class="codefield" aria-hidden="true"></div>
     <div class="code-shroud" aria-hidden="true"></div>
     <main class="cv-shell">
-      <header class="hero section reveal">
+      <header class="hero section">
         <div class="hero-top">
           <p class="prompt" data-command="cat nikita_vostrosablin_cv.txt">nikita@cv:~$ <span id="typed-command"></span></p>
           <div class="hero-actions">
-            <button id="export-pdf" class="export-pdf" type="button">Export PDF</button>
+            <a id="export-pdf" class="export-pdf" href="./cv.pdf" target="_blank" rel="noopener">Export PDF</a>
             <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme">
               <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="12" cy="12" r="4"></circle>
@@ -49,30 +49,90 @@
         <p class="subtitle">Engineering Manager | AI &amp; Distributed Systems | Python, Kubernetes, AWS</p>
         <p class="location">Prague, Czech Republic</p>
       </header>
-      <section class="section reveal grid-two">
-        <div>
-          <h2>Contact</h2>
-          <ul>
-            <li><a href="mailto:nikita.vostrosablin@gmail.com">nikita.vostrosablin@gmail.com</a></li>
-            <li><a href="https://www.linkedin.com/in/nikita-vostrosablin-phd-98461594" target="_blank" rel="noreferrer">linkedin.com/in/nikita-vostrosablin-phd-98461594</a></li>
-          </ul>
-        </div>
-        <div>
-          <h2>Top Skills</h2>
-          <ul>
-            <li>Kubernetes</li>
-            <li>Amazon Web Services (AWS)</li>
-            <li>Apache Kafka</li>
-          </ul>
-        </div>
+      <section class="section">
+        <h2>Contact</h2>
+        <ul>
+          <li><a href="mailto:nikita.vostrosablin@gmail.com">nikita.vostrosablin@gmail.com</a></li>
+          <li><a href="https://www.linkedin.com/in/nikita-vostrosablin-phd-98461594" target="_blank" rel="noreferrer">linkedin.com/in/nikita-vostrosablin-phd-98461594</a></li>
+        </ul>
       </section>
-      <section class="section reveal">
+      <section class="section">
         <h2>Experience</h2>
 
         <article class="role">
           <h3>Stats Perform</h3>
           <p class="meta">Engineering Manager | Jul 2025 - Present | Prague, Czechia</p>
-          <p>Leading a 10-person engineering team delivering AI-driven, distributed Python systems on Kubernetes and AWS. Responsible for technical strategy, scalable architecture, quality standards, and translating product needs into resilient real-time and post-game data pipelines.</p>
+          <p>Lead a team of 9–12 engineers (predominantly mid-level, ~20% senior) owning a portfolio of ~30 production data pipelines and ~150 services powering real-time and batch sports analytics systems.</p>
+          <h4 class="role-subsection">Scope &amp; Systems</h4>
+          <ul>
+            <li>Own architecture, reliability, and delivery of distributed Python systems running on AWS (SQS/SNS, Lambda) and Kubernetes, with Kafka/Flink-based streaming pipelines</li>
+            <li>Responsible for end-to-end production health and on-call operations across all owned services</li>
+            <li>Process data for ~15K matches/year, including real-time ingestion and post-game reprocessing workflows</li>
+          </ul>
+          <h4 class="role-subsection">Scale &amp; Performance</h4>
+          <ul>
+            <li>Systems process ~10⁵–10⁶ events/day across pipelines (depending on competition load), with peak per-service throughput of ~10–50 events/sec and streaming workloads at 25 Hz (video frame rate)</li>
+            <li>Maintain real-time processing latency of ≤5 minutes behind game clock for live pipelines</li>
+            <li>Reduced processing time in key pipelines by up to ~80% via architectural redesign and algorithmic optimization (e.g., eliminated Kafka single-topic bottlenecks by introducing fan-out architectures across services)</li>
+          </ul>
+          <h4 class="role-subsection">Reliability &amp; Operability</h4>
+          <ul>
+            <li>Defined and enforced pipeline-level SLOs (latency and data completeness), e.g.:
+              <ul>
+                <li>metric generation every minute with ≤5 min latency</li>
+                <li>≥95% successful batch completion rate</li>
+              </ul></li>
+            <li>Introduced structured observability (metrics, alerting, on-call processes), reducing:
+              <ul>
+                <li>incident resolution time from multiple days → ~1 day</li>
+                <li>support allocation from ~25% → ~2% of team capacity</li>
+              </ul></li>
+            <li>Led cross-team incident resolution for systemic failures, identifying upstream bottlenecks and driving organization-level support process changes</li>
+          </ul>
+          <h4 class="role-subsection">Architecture &amp; Design</h4>
+          <ul>
+            <li>Designed hybrid event-driven architecture:
+              <ul>
+                <li>Kafka for streaming and inter-team integration</li>
+                <li>SQS/SNS for internal service fan-out and decoupling</li>
+                <li>Built primarily stateless microservices with externalized state (e.g., DynamoDB)</li>
+                <li>Example of a challenge: Solved ordering constraints in distributed pipelines via resequencing mechanisms to handle upstream parallelization inconsistencies</li>
+              </ul></li>
+          </ul>
+          <h4 class="role-subsection">AI/ML Platform Integration</h4>
+          <ul>
+            <li>Productionized ML pipelines supporting:
+              <ul>
+                <li>computer vision models (video-based inference)</li>
+                <li>transformer-based imputation models</li>
+                <li>many other model architectures (e.g. gradient boosting models etc)</li>
+              </ul></li>
+            <li>Supported both online and offline inference workflows, ensuring pipeline integration and latency constraints (~minutes-scale SLA per game segment)</li>
+            <li>Partnered with AI teams owning model evaluation; responsible for reliability and scalability of inference pipelines</li>
+          </ul>
+          <h4 class="role-subsection">Execution &amp; Delivery</h4>
+          <ul>
+            <li>Established CI/CD and service standardization enabling multiple deployments per day</li>
+            <li>Reduced idea-to-production lead time to ~1 week on average</li>
+            <li>Improved delivery velocity through platform standardization, documentation, and automation initiatives</li>
+          </ul>
+          <h4 class="role-subsection">Leadership &amp; Org Impact</h4>
+          <ul>
+            <li>Hired 3 engineers directly; contributed to dozens of hiring processes</li>
+            <li>Led 2 promotions and managed underperformance through structured feedback and coaching</li>
+            <li>Reorganized team into squad-based ownership model, improving focus and accountability</li>
+            <li>Initiated and led RQDX program (Reliability, Quality, Developer Experience):
+              <ul>
+                <li>reduced technical debt</li>
+                <li>standardized services</li>
+                <li>improved developer productivity and system reliability</li>
+              </ul></li>
+          </ul>
+          <h4 class="role-subsection">Cross-Team Impact</h4>
+          <ul>
+            <li>Systems serve as critical dependencies for multiple downstream teams and products</li>
+            <li>Core contributor to multi-team architecture design for a large-scale streaming platform</li>
+          </ul>
           <p class="meta">Senior Software Engineer, Team Lead | Dec 2023 - Jul 2025</p>
           <p>Led a sub-team delivering machine-learning products for Opta Vision. Built event-driven AWS architecture, microservices on Kubernetes, and a CI/CD-focused delivery model for stable and fast production deployments.</p>
           <ul>
@@ -127,7 +187,7 @@
           <p>Worked on quantum optomechanics research with focus on theoretical foundations of a stroboscopic optomechanical transducer in collaboration with an experimental research team.</p>
         </article>
       </section>
-      <section class="section reveal grid-two">
+      <section class="section grid-two">
         <div>
           <h2>Education</h2>
           <ul>
@@ -145,7 +205,7 @@
           </ul>
         </div>
       </section>
-      <section class="section reveal grid-two">
+      <section class="section grid-two">
         <div>
           <h2>Certifications</h2>
           <ul>
@@ -166,6 +226,6 @@
       </section>
     </main>
 
-    <script src="./script.js?v=20260318-4"></script>
+    <script src="./script.js?v=20260326-2"></script>
   </body>
 </html>
