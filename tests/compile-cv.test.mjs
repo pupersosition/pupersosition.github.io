@@ -35,11 +35,11 @@ test("renders export control as a direct link to pre-generated PDF", async () =>
   const html = await readFile(outputPath, "utf8");
 
   assert.ok(
-    html.includes('<a id="export-pdf" class="export-pdf" href="./cv.pdf" target="_blank" rel="noopener">Export PDF</a>'),
+    html.includes('<a id="export-pdf" class="export-pdf" href="./cv.pdf" target="_blank" rel="noopener">Download PDF</a>'),
     "Expected export control to point to the generated PDF file"
   );
   assert.equal(
-    html.includes('<button id="export-pdf" class="export-pdf" type="button">Export PDF</button>'),
+    html.includes('<button id="export-pdf" class="export-pdf" type="button">Download PDF</button>'),
     false,
     "Expected print-style export button markup to be removed"
   );

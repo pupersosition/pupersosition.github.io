@@ -349,7 +349,7 @@ function renderPage(frontmatter, blocks) {
         <div class="hero-top">
           <p class="prompt" data-command="${escapeAttribute(promptCommand)}">${promptPrefixHtml}<span id="typed-command"></span></p>
           <div class="hero-actions">
-            <a id="export-pdf" class="export-pdf" href="./cv.pdf" target="_blank" rel="noopener">Export PDF</a>
+            <a id="export-pdf" class="export-pdf" href="./cv.pdf" target="_blank" rel="noopener">Download PDF</a>
             <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme">
               <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="12" cy="12" r="4"></circle>
