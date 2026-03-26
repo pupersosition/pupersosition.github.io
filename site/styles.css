@@ -16,6 +16,18 @@
   --pointer-y: 50vh;
   --spotlight-inner: 5rem;
   --spotlight-outer: 13rem;
+  --export-glow-border-soft: 0.38;
+  --export-glow-border-strong: 0.58;
+  --export-glow-border-fade: 0.32;
+  --export-glow-bg-soft: 0.03;
+  --export-glow-bg-strong: 0.06;
+  --export-glow-bg-fade: 0.02;
+  --export-glow-ring-soft: 0.1;
+  --export-glow-ring-strong: 0.16;
+  --export-glow-ring-fade: 0.08;
+  --export-glow-shadow-soft: 0.08;
+  --export-glow-shadow-strong: 0.14;
+  --export-glow-shadow-fade: 0.06;
 }
 
 :root[data-theme="light"] {
@@ -32,6 +44,18 @@
   --shell-shadow: 0 0 0 1px rgba(20, 32, 43, 0.05), 0 12px 30px rgba(49, 69, 87, 0.1);
   --veil-rgb: 229 235 230;
   --code-rgb: 47 125 64;
+  --export-glow-border-soft: 0.6;
+  --export-glow-border-strong: 0.82;
+  --export-glow-border-fade: 0.46;
+  --export-glow-bg-soft: 0.06;
+  --export-glow-bg-strong: 0.12;
+  --export-glow-bg-fade: 0.04;
+  --export-glow-ring-soft: 0.14;
+  --export-glow-ring-strong: 0.24;
+  --export-glow-ring-fade: 0.12;
+  --export-glow-shadow-soft: 0.12;
+  --export-glow-shadow-strong: 0.24;
+  --export-glow-shadow-fade: 0.08;
 }
 
 * {
@@ -188,11 +212,65 @@ body {
   align-items: center;
   text-decoration: none;
   cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease;
+  animation: export-pdf-glow 3s ease-in-out infinite;
 }
 
 .export-pdf:hover {
   border-color: var(--accent);
   color: var(--accent);
+  background: rgb(var(--code-rgb) / var(--export-glow-bg-strong));
+  box-shadow:
+    0 0 0 1px rgb(var(--code-rgb) / var(--export-glow-ring-strong)),
+    0 0 16px rgb(var(--code-rgb) / var(--export-glow-shadow-strong));
+}
+
+@keyframes export-pdf-glow {
+  0%,
+  58%,
+  100% {
+    border-color: var(--line);
+    color: var(--text);
+    background: transparent;
+    box-shadow: none;
+  }
+
+  68% {
+    border-color: rgb(var(--code-rgb) / var(--export-glow-border-soft));
+    color: var(--accent);
+    background: rgb(var(--code-rgb) / var(--export-glow-bg-soft));
+    box-shadow:
+      0 0 0 1px rgb(var(--code-rgb) / var(--export-glow-ring-soft)),
+      0 0 10px rgb(var(--code-rgb) / var(--export-glow-shadow-soft));
+  }
+
+  78% {
+    border-color: rgb(var(--code-rgb) / var(--export-glow-border-strong));
+    color: var(--accent);
+    background: rgb(var(--code-rgb) / var(--export-glow-bg-strong));
+    box-shadow:
+      0 0 0 1px rgb(var(--code-rgb) / var(--export-glow-ring-strong)),
+      0 0 20px rgb(var(--code-rgb) / var(--export-glow-shadow-strong));
+  }
+
+  92% {
+    border-color: rgb(var(--code-rgb) / var(--export-glow-border-fade));
+    color: var(--text);
+    background: rgb(var(--code-rgb) / var(--export-glow-bg-fade));
+    box-shadow:
+      0 0 0 1px rgb(var(--code-rgb) / var(--export-glow-ring-fade)),
+      0 0 8px rgb(var(--code-rgb) / var(--export-glow-shadow-fade));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .export-pdf {
+    animation: none;
+  }
 }
 
 .theme-toggle {
