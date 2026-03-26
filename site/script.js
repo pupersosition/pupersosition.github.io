@@ -7,6 +7,10 @@ const THEME_KEY = "cv-theme";
 const pdfMode = new URLSearchParams(window.location.search).get("pdf") === "1";
 let refreshSwarmAccent = null;
 
+function markUiReady() {
+  document.documentElement.dataset.uiReady = "true";
+}
+
 function typeCommand(text, target) {
   let i = 0;
   const interval = setInterval(() => {
@@ -263,9 +267,11 @@ if (pdfMode) {
   if (typedCommand) {
     typedCommand.textContent = command;
   }
+  markUiReady();
 } else {
   refreshSwarmAccent = setupCursorSwarm();
   setupFlashlightBackground();
   setupThemeToggle();
   typeCommand(command, typedCommand);
+  markUiReady();
 }

@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
 const sourcePath = path.join(rootDir, "content", "cv.md");
 const outputPath = path.join(rootDir, "site", "index.html");
-const assetVersion = "20260326-2";
+const assetVersion = "20260327-1";
 
 async function main() {
   const source = await readFile(sourcePath, "utf8");
