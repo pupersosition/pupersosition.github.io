@@ -106,6 +106,15 @@ body {
   transition: opacity 180ms ease;
 }
 
+:root:not([data-ui-ready="true"]) .codefield,
+:root:not([data-ui-ready="true"]) .code-shroud {
+  opacity: 0;
+}
+
+:root:not([data-ui-ready="true"]) .code-shroud {
+  transition: none;
+}
+
 :root[data-theme="light"][data-swarm="enabled"] .cursor-swarm {
   opacity: 1;
 }
