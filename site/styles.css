@@ -76,6 +76,18 @@ body {
   overflow-x: hidden;
 }
 
+strong,
+b {
+  font-weight: 700;
+  color: color-mix(in srgb, var(--accent) 72%, var(--text) 28%);
+}
+
+em,
+i {
+  font-style: italic;
+  color: color-mix(in srgb, var(--accent) 58%, var(--text) 42%);
+}
+
 .screen-noise {
   position: fixed;
   inset: 0;
@@ -182,12 +194,33 @@ body {
 
 .subtitle {
   margin: 0;
+  max-width: 46rem;
+  line-height: 1.75;
   color: var(--muted);
 }
 
 .location {
-  margin: 0.25rem 0 0;
+  margin: 0.8rem 0 0;
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--muted);
+  opacity: 0.72;
+}
+
+@media screen {
+  .subtitle {
+    max-width: none;
+  }
+
+  .location {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.28rem 0.58rem;
+    border: 1px solid color-mix(in srgb, var(--line) 80%, var(--accent) 20%);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--surface-top) 84%, transparent);
+  }
 }
 
 .prompt {
