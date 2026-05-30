@@ -23,6 +23,23 @@ test("print styles allow role content to flow without forced blank pages", async
   const stylesPath = path.join(rootDir, "site", "styles.css");
   const css = await readFile(stylesPath, "utf8");
 
+  assert.ok(
+    css.includes("strong,") && css.includes("font-weight: 700;"),
+    "Expected CSS to explicitly render strong text with a heavier weight"
+  );
+  assert.ok(
+    css.includes("strong,") && css.includes("color: color-mix(in srgb, var(--accent) 72%, var(--text) 28%);"),
+    "Expected strong text to get a visible accent treatment"
+  );
+  assert.ok(
+    css.includes("em,") && css.includes("font-style: italic;"),
+    "Expected CSS to explicitly render emphasis text in italics"
+  );
+  assert.ok(
+    css.includes("em,") && css.includes("color: color-mix(in srgb, var(--accent) 58%, var(--text) 42%);"),
+    "Expected emphasized text to get a visible accent treatment"
+  );
+
   assert.equal(
     css.includes(".section,\n  .role {\n    break-inside: avoid;\n  }"),
     false,

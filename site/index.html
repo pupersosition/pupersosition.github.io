@@ -3,18 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nikita Vostrosablin | CV</title>
+    <title>Ampersand Test | CV</title>
     <meta
       name="description"
-      content="Nikita Vostrosablin, PhD - Engineering Manager focused on AI and distributed systems."
+      content="Ampersand rendering regression test"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./styles.css?v=20260326-2" />
+      <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
+        rel="stylesheet"
+      />
+    <link rel="stylesheet" href="./styles.css?v=7082374ca6" />
   </head>
   <body>
     <div class="screen-noise" aria-hidden="true"></div>
@@ -24,9 +24,9 @@
     <main class="cv-shell">
       <header class="hero section">
         <div class="hero-top">
-          <p class="prompt" data-command="cat nikita_vostrosablin_cv.txt">nikita@cv:~$ <span id="typed-command"></span></p>
+          <p class="prompt" data-command="cat ampersand.txt">test@cv:~$ <span id="typed-command"></span></p>
           <div class="hero-actions">
-            <a id="export-pdf" class="export-pdf" href="./cv.pdf" target="_blank" rel="noopener">Export PDF</a>
+            <a id="export-pdf" class="export-pdf" href="./cv.pdf?v=71711ebb96" target="_blank" rel="noopener">Export PDF</a>
             <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme">
               <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="12" cy="12" r="4"></circle>
@@ -45,203 +45,18 @@
             </button>
           </div>
         </div>
-        <h1>Nikita Vostrosablin, PhD</h1>
-        <p class="subtitle">Engineering Manager | AI &amp; Distributed Systems | Python, Kubernetes, AWS</p>
-        <p class="location">Prague, Czech Republic</p>
+        <h1>Ampersand Test</h1>
+        <p class="subtitle">Inline entity coverage</p>
+        <p class="location">Test Lab</p>
       </header>
       <section class="section">
-        <h2>Contact</h2>
+        <h2>Technologies</h2>
         <ul>
-          <li><a href="mailto:nikita.vostrosablin@gmail.com">nikita.vostrosablin@gmail.com</a></li>
-          <li><a href="https://www.linkedin.com/in/nikita-vostrosablin-phd-98461594" target="_blank" rel="noreferrer">linkedin.com/in/nikita-vostrosablin-phd-98461594</a></li>
+          <li><strong>Languages &amp; Core:</strong> Python</li>
         </ul>
-      </section>
-      <section class="section">
-        <h2>Experience</h2>
-
-        <article class="role">
-          <h3>Stats Perform</h3>
-          <p class="meta">Engineering Manager | Jul 2025 - Present | Prague, Czechia</p>
-          <p>Lead a team of 9–12 engineers (predominantly mid-level, ~20% senior) owning a portfolio of ~30 production data pipelines and ~150 services powering real-time and batch sports analytics systems.</p>
-          <h4 class="role-subsection">Scope &amp; Systems</h4>
-          <ul>
-            <li>Own architecture, reliability, and delivery of distributed Python systems running on AWS (SQS/SNS, Lambda) and Kubernetes, with Kafka/Flink-based streaming pipelines</li>
-            <li>Responsible for end-to-end production health and on-call operations across all owned services</li>
-            <li>Process data for ~15K matches/year, including real-time ingestion and post-game reprocessing workflows</li>
-          </ul>
-          <h4 class="role-subsection">Scale &amp; Performance</h4>
-          <ul>
-            <li>Systems process ~10⁵–10⁶ events/day across pipelines (depending on competition load), with peak per-service throughput of ~10–50 events/sec and streaming workloads at 25 Hz (video frame rate)</li>
-            <li>Maintain real-time processing latency of ≤5 minutes behind game clock for live pipelines</li>
-            <li>Reduced processing time in key pipelines by up to ~80% via architectural redesign and algorithmic optimization (e.g., eliminated Kafka single-topic bottlenecks by introducing fan-out architectures across services)</li>
-          </ul>
-          <h4 class="role-subsection">Reliability &amp; Operability</h4>
-          <ul>
-            <li>Defined and enforced pipeline-level SLOs (latency and data completeness), e.g.:
-              <ul>
-                <li>metric generation every minute with ≤5 min latency</li>
-                <li>≥95% successful batch completion rate</li>
-              </ul></li>
-            <li>Introduced structured observability (metrics, alerting, on-call processes), reducing:
-              <ul>
-                <li>incident resolution time from multiple days → ~1 day</li>
-                <li>support allocation from ~25% → ~2% of team capacity</li>
-              </ul></li>
-            <li>Led cross-team incident resolution for systemic failures, identifying upstream bottlenecks and driving organization-level support process changes</li>
-          </ul>
-          <h4 class="role-subsection">Architecture &amp; Design</h4>
-          <ul>
-            <li>Designed hybrid event-driven architecture:
-              <ul>
-                <li>Kafka for streaming and inter-team integration</li>
-                <li>SQS/SNS for internal service fan-out and decoupling</li>
-                <li>Built primarily stateless microservices with externalized state (e.g., DynamoDB)</li>
-                <li>Example of a challenge: Solved ordering constraints in distributed pipelines via resequencing mechanisms to handle upstream parallelization inconsistencies</li>
-              </ul></li>
-          </ul>
-          <h4 class="role-subsection">AI/ML Platform Integration</h4>
-          <ul>
-            <li>Productionized ML pipelines supporting:
-              <ul>
-                <li>computer vision models (video-based inference)</li>
-                <li>transformer-based imputation models</li>
-                <li>many other model architectures (e.g. gradient boosting models etc)</li>
-              </ul></li>
-            <li>Supported both online and offline inference workflows, ensuring pipeline integration and latency constraints (~minutes-scale SLA per game segment)</li>
-            <li>Partnered with AI teams owning model evaluation; responsible for reliability and scalability of inference pipelines</li>
-          </ul>
-          <h4 class="role-subsection">Execution &amp; Delivery</h4>
-          <ul>
-            <li>Established CI/CD and service standardization enabling multiple deployments per day</li>
-            <li>Reduced idea-to-production lead time to ~1 week on average</li>
-            <li>Improved delivery velocity through platform standardization, documentation, and automation initiatives</li>
-          </ul>
-          <h4 class="role-subsection">Leadership &amp; Org Impact</h4>
-          <ul>
-            <li>Hired 3 engineers directly; contributed to dozens of hiring processes</li>
-            <li>Led 2 promotions and managed underperformance through structured feedback and coaching</li>
-            <li>Reorganized team into squad-based ownership model, improving focus and accountability</li>
-            <li>Initiated and led RQDX program (Reliability, Quality, Developer Experience):
-              <ul>
-                <li>reduced technical debt</li>
-                <li>standardized services</li>
-                <li>improved developer productivity and system reliability</li>
-              </ul></li>
-          </ul>
-          <h4 class="role-subsection">Cross-Team Impact</h4>
-          <ul>
-            <li>Systems serve as critical dependencies for multiple downstream teams and products</li>
-            <li>Core contributor to multi-team architecture design for a large-scale streaming platform</li>
-          </ul>
-          <p class="meta">Senior Software Engineer, Team Lead | Dec 2023 - Jul 2025</p>
-          <p>Acted as technical lead for a 4-engineer sub-team responsible for productionizing ML pipelines and distributed systems for the Opta Vision platform, delivering AI-driven metrics across multiple competitions.</p>
-          <h4 class="role-subsection">Key Contributions</h4>
-          <ul>
-            <li>Designed and implemented multiple event-driven pipelines and services generating real-time and post-game metrics
-              <ul>
-                <li>(Scale of the systems is described in the EM section above)</li>
-              </ul></li>
-            <li>Rebuilt underperforming pipelines, removing architectural bottlenecks and improving throughput</li>
-            <li>Identified and fixed critical inefficiencies in DynamoDB usage:
-              <ul>
-                <li>redesigned schema to eliminate expensive scan operations</li>
-                <li>achieved significant cost reduction and performance improvement</li>
-              </ul></li>
-            <li>Led migration of compute workloads from AWS-managed services to Kubernetes as part of a cost optimization initiative</li>
-          </ul>
-          <h4 class="role-subsection">Technical Leadership</h4>
-          <ul>
-            <li>Drove architecture decisions</li>
-            <li>Mentored engineers</li>
-            <li>Introduced design-first development (design docs), improving alignment and reducing rework</li>
-            <li>Participated in hiring processes</li>
-          </ul>
-        </article>
-
-        <article class="role">
-          <h3>Merck (MSD Czech Republic)</h3>
-          <p class="meta">Scientific Software Engineer, Team Lead | Jul 2021 - Nov 2023 | Prague, Czechia</p>
-          <ul>
-            <li>Developed advanced algorithms for scientific and bioinformatics applications</li>
-            <li>Contributed to a patented reaction-pathfinder system (US Patent: 20240105285)</li>
-            <li>Built AWS-based, event-driven genomics platforms with Batch, Lambda, Step Functions, SQS, DynamoDB, and Redshift</li>
-            <li>Implemented Terraform-based infrastructure, CI/CD, and production observability practices</li>
-            <li>Led cross-functional delivery of a production mRNA optimization platform</li>
-          </ul>
-          <p class="meta">Python Developer / Machine Learning Engineer | May 2019 - Jul 2021</p>
-          <p>Worked in the AI group across business domains and collaborated with bioinformatics teams on molecular computation and optimization challenges for drug discovery.</p>
-        </article>
-
-        <article class="role">
-          <h3>Dimension Data</h3>
-          <p class="meta">Data ETL Engineer | Dec 2017 - Apr 2019 | Czech Republic</p>
-          <ul>
-            <li>Built BI infrastructure from scratch for a major European client</li>
-            <li>Designed automated dataflows and operational reporting workflows</li>
-            <li>Maintained data quality and stakeholder-facing delivery</li>
-          </ul>
-        </article>
-
-        <article class="role">
-          <h3>ORIFLAME SOFTWARE</h3>
-          <p class="meta">Intern - Data Scientist, BI/DWH Developer | Jun 2017 - Aug 2017 | Olomouc</p>
-          <ul>
-            <li>Applied ML and NLP for sales forecasting and customer-review sentiment analysis</li>
-            <li>Built ETL connector pipelines with Pentaho ETL and Python automation</li>
-          </ul>
-        </article>
-
-        <article class="role">
-          <h3>Freelance</h3>
-          <p class="meta">Freelance Web Developer | Sep 2016 - Dec 2016</p>
-          <p>Built web tooling and automated mail reporting for a renovation-oriented web service using Node.js, HTML, CSS preprocessors, and template engines.</p>
-        </article>
-
-        <article class="role">
-          <h3>DTU - Technical University of Denmark</h3>
-          <p class="meta">Researcher | Sep 2016 - Nov 2016 | Kongens Lyngby, Denmark</p>
-          <p>Worked on quantum optomechanics research with focus on theoretical foundations of a stroboscopic optomechanical transducer in collaboration with an experimental research team.</p>
-        </article>
-      </section>
-      <section class="section grid-two">
-        <div>
-          <h2>Education</h2>
-          <ul>
-            <li><strong>Univerzita Palackeho v Olomouci</strong><br />PhD, Quantum Physics (Sep 2014 - Mar 2021)</li>
-            <li><strong>Lomonosov Moscow State University (MSU)</strong><br />Master of Science, Physics (2008 - 2014)</li>
-          </ul>
-        </div>
-        <div>
-          <h2>Languages</h2>
-          <ul>
-            <li>Russian (Native)</li>
-            <li>English (Fluent, Professional Working)</li>
-            <li>French (Limited Working)</li>
-            <li>Czech (Intermediate)</li>
-          </ul>
-        </div>
-      </section>
-      <section class="section grid-two">
-        <div>
-          <h2>Certifications</h2>
-          <ul>
-            <li>Spark and Python for Big Data with PySpark</li>
-            <li>Apache Spark 2 with Python - Big Data with PySpark and Spark</li>
-          </ul>
-        </div>
-        <div>
-          <h2>Selected Publications</h2>
-          <ul>
-            <li>Statistical spring in the Advanced LIGO detector with unbalanced arms and in the Michelson-Sagnac interferometer</li>
-            <li>mRNAid, an open-source platform for therapeutic mRNA design and optimization strategies</li>
-            <li>Pulsed quantum interaction between two distant mechanical oscillators</li>
-            <li>Squeezer-based pulsed optomechanical interface</li>
-            <li>Pulsed quantum continuous-variable optoelectromechanical transducer</li>
-          </ul>
-        </div>
       </section>
     </main>
 
-    <script src="./script.js?v=20260326-2"></script>
+    <script src="./script.js?v=7082374ca6"></script>
   </body>
 </html>

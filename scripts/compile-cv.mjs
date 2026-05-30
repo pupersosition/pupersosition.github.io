@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -7,18 +8,39 @@ const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, "..");
 const sourcePath = path.join(rootDir, "content", "cv.md");
 const outputPath = path.join(rootDir, "site", "index.html");
-const assetVersion = "20260326-2";
+const stylesPath = path.join(rootDir, "site", "styles.css");
+const scriptPath = path.join(rootDir, "site", "script.js");
 
 async function main() {
   const source = await readFile(sourcePath, "utf8");
+  const assetVersion = await getAssetVersion();
+  const documentVersion = await getDocumentVersion(source);
   const { frontmatter, body } = splitFrontmatter(source);
   const documentAst = parseDocument(body);
-  const html = renderPage(frontmatter, documentAst);
+  const html = renderPage(frontmatter, documentAst, assetVersion, documentVersion);
 
   await mkdir(path.dirname(outputPath), { recursive: true });
   await writeFile(outputPath, `${html}\n`, "utf8");
 
   process.stdout.write(`Compiled ${path.relative(rootDir, outputPath)} from ${path.relative(rootDir, sourcePath)}\n`);
+}
+
+async function getAssetVersion() {
+  const [styles, script] = await Promise.all([
+    readFile(stylesPath, "utf8"),
+    readFile(scriptPath, "utf8")
+  ]);
+
+  return createHash("sha256").update(styles).update(script).digest("hex").slice(0, 10);
+}
+
+async function getDocumentVersion(source) {
+  const [styles, script] = await Promise.all([
+    readFile(stylesPath, "utf8"),
+    readFile(scriptPath, "utf8")
+  ]);
+
+  return createHash("sha256").update(source).update(styles).update(script).digest("hex").slice(0, 10);
 }
 
 function splitFrontmatter(source) {
@@ -316,7 +338,7 @@ function parseParagraph(lines, startIndex, options) {
   };
 }
 
-function renderPage(frontmatter, blocks) {
+function renderPage(frontmatter, blocks, assetVersion, documentVersion) {
   const promptPrefix = frontmatter.promptPrefix || "";
   const promptCommand = frontmatter.promptCommand || "";
   const promptPrefixHtml = promptPrefix ? `${escapeHtml(promptPrefix)} ` : "";
@@ -333,10 +355,10 @@ function renderPage(frontmatter, blocks) {
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap"
-      rel="stylesheet"
-    />
+      <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
+        rel="stylesheet"
+      />
     <link rel="stylesheet" href="./styles.css?v=${assetVersion}" />
   </head>
   <body>
@@ -349,7 +371,7 @@ function renderPage(frontmatter, blocks) {
         <div class="hero-top">
           <p class="prompt" data-command="${escapeAttribute(promptCommand)}">${promptPrefixHtml}<span id="typed-command"></span></p>
           <div class="hero-actions">
-            <a id="export-pdf" class="export-pdf" href="./cv.pdf" target="_blank" rel="noopener">Export PDF</a>
+            <a id="export-pdf" class="export-pdf" href="./cv.pdf?v=${documentVersion}" target="_blank" rel="noopener">Export PDF</a>
             <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme">
               <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="12" cy="12" r="4"></circle>
@@ -491,9 +513,22 @@ function renderInline(text, options = {}) {
     });
   }
 
-  output = output.replace(/\*\*([^*]+)\*\*/g, (_, value) => `<strong>${renderInline(value, { allowLinks: false })}</strong>`);
+  output = output.replace(/\*\*([^*]+)\*\*/g, (_, value) => {
+    return `<strong>${renderInline(decodeHtmlEntities(value), { allowLinks: false })}</strong>`;
+  });
+  output = output.replace(/\*([^*]+)\*/g, (_, value) => {
+    return `<em>${renderInline(decodeHtmlEntities(value), { allowLinks: false })}</em>`;
+  });
   output = output.replace(new RegExp(breakToken, "g"), "<br />");
   return output;
+}
+
+function decodeHtmlEntities(value) {
+  return value
+    .replace(/&quot;/g, '"')
+    .replace(/&gt;/g, ">")
+    .replace(/&lt;/g, "<")
+    .replace(/&amp;/g, "&");
 }
 
 function normalizeLineEndings(value) {
