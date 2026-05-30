@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ampersand Test | CV</title>
+    <title>Nikita Vostrosablin | CV</title>
     <meta
       name="description"
-      content="Ampersand rendering regression test"
+      content="Nikita Vostrosablin, PhD - Engineering Manager focused on AI and distributed systems."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,9 +24,9 @@
     <main class="cv-shell">
       <header class="hero section">
         <div class="hero-top">
-          <p class="prompt" data-command="cat ampersand.txt">test@cv:~$ <span id="typed-command"></span></p>
+          <p class="prompt" data-command="cat nikita_vostrosablin_cv.txt">nikita@cv:~$ <span id="typed-command"></span></p>
           <div class="hero-actions">
-            <a id="export-pdf" class="export-pdf" href="./cv.pdf?v=b9957d2e4f" target="_blank" rel="noopener">Export PDF</a>
+            <a id="export-pdf" class="export-pdf" href="./cv.pdf?v=f77d095219" target="_blank" rel="noopener">Export PDF</a>
             <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme">
               <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="12" cy="12" r="4"></circle>
@@ -45,15 +45,198 @@
             </button>
           </div>
         </div>
-        <h1>Ampersand Test</h1>
-        <p class="subtitle">Inline entity coverage</p>
-        <p class="location">Test Lab</p>
+        <h1>Nikita Vostrosablin, PhD</h1>
+        <p class="subtitle">Engineering Leader focused on production ML and backend systems. I bring experience from both research-heavy and product-focused environments and remain deeply technical while driving operational improvements.</p>
+        <p class="location">Prague, Czech Republic</p>
       </header>
       <section class="section">
-        <h2>Technologies</h2>
+        <h2>Contact</h2>
         <ul>
-          <li><strong>Languages &amp; Core:</strong> Python</li>
+          <li><a href="mailto:nikita.vostrosablin@gmail.com">nikita.vostrosablin@gmail.com</a></li>
+          <li><a href="https://www.linkedin.com/in/nikita-vostrosablin-phd-98461594" target="_blank" rel="noreferrer">linkedin.com/in/nikita-vostrosablin-phd-98461594</a></li>
         </ul>
+      </section>
+      <section class="section">
+        <h2>Experience</h2>
+
+        <article class="role">
+          <h3>Stats Perform</h3>
+          <p class="meta">Engineering Manager | Jul 2025 - Present | Prague, Czechia</p>
+          <p>Lead a team of 9–12 engineers (predominantly mid-level, ~20% senior) owning production ML and data pipelines that support sports analytics products used by some of the world’s biggest broadcasters and professional clubs.</p>
+          <h4 class="role-subsection">Scope &amp; Systems</h4>
+          <ul>
+            <li>Own architecture, reliability, and stability of ~30 production ML and data pipelines and ~150 distributed Python services running on AWS and on-prem Kubernetes clusters.</li>
+            <li>Drive architectural decisions for new systems and product launches, while improving the reliability and operability of existing production systems.</li>
+            <li>Own end-to-end production health, incident response, and on-call operations across all owned services.</li>
+          </ul>
+          <h4 class="role-subsection">Scale &amp; Performance</h4>
+          <ul>
+            <li>Systems operate across both high-throughput pipelines processing thousands of events/sec and streaming workloads running at 25 Hz (video broadcast frame rate).</li>
+            <li><em>Example of a key achievement</em>: Reduced processing time in key pipelines by up to ~80% via architectural redesign and algorithmic optimization (e.g., eliminated Kafka single-topic bottlenecks by introducing fan-out architectures across services)</li>
+          </ul>
+          <h4 class="role-subsection">Reliability &amp; Operability (Contribution Examples)</h4>
+          <ul>
+            <li>Defined and enforced pipeline-level SLOs (latency and data completeness), e.g.:
+              <ul>
+                <li>metric generation every minute with ≤5 min latency</li>
+                <li>≥95% successful batch completion rate</li>
+              </ul></li>
+            <li>Introduced structured observability (metrics, alerting, on-call processes), reducing:
+              <ul>
+                <li>incident resolution time from multiple days → ~1 day</li>
+                <li>support allocation from ~25% → ~2% of team capacity</li>
+              </ul></li>
+            <li>Led cross-team incident resolution for systemic failures, identifying upstream bottlenecks and driving organization-level support process changes</li>
+          </ul>
+          <h4 class="role-subsection">Architecture &amp; Design</h4>
+          <ul>
+            <li>Continuously contributed to the architectural design of multiple systems, both within the team and across team boundaries, shaping pipelines, and services designs across AWS/cloud and on-prem data center environments.</li>
+            <li><em>Example of contribution:</em> Influenced cross-team technology choices during the design of a shared streaming system by identifying Apache Flink as a better fit than the sub-optimal technologies used in the initial PoC, educating 3 collaborating teams on the trade-offs, and helping drive adoption; the pipeline was later rebuilt with Flink and confirmed by engineers as the stronger solution.</li>
+          </ul>
+          <h4 class="role-subsection">AI/ML Platform Integration</h4>
+          <ul>
+            <li>Supported both online and offline inference workflows, ensuring pipeline integration and latency constraints (~minutes-scale SLA per game segment)</li>
+            <li>Partnered with AI teams owning model evaluation; responsible for reliability and scalability of inference pipelines</li>
+          </ul>
+          <h4 class="role-subsection">Execution &amp; Delivery</h4>
+          <ul>
+            <li>Established CI/CD and service standardization enabling multiple deployments per day</li>
+            <li>Reduced idea-to-production lead time to ~1 week on average</li>
+            <li>Improved delivery velocity through platform standardization, documentation, and automation initiatives</li>
+          </ul>
+          <h4 class="role-subsection">Leadership &amp; Org Impact</h4>
+          <ul>
+            <li>Hired 3 engineers directly; contributed to dozens of hiring processes across multiple teams</li>
+            <li>Led 3 promotions and managed underperformance through structured feedback and coaching</li>
+            <li>Reorganized team into squad-based ownership model, improving focus and accountability, and introduced the DX4 framework to track team performance through a combination of automated metrics collection and team surveys.</li>
+            <li>Initiated and led RQDX program (Reliability, Quality, Developer Experience):
+              <ul>
+                <li>reduced technical debt</li>
+                <li>standardized services</li>
+                <li>improved developer productivity and system reliability</li>
+              </ul></li>
+          </ul>
+          <h4 class="role-subsection">Cross-Team Impact</h4>
+          <ul>
+            <li>Systems serve as critical dependencies for multiple downstream teams and products</li>
+            <li>Core contributor to multi-team architecture design for a large-scale streaming platform</li>
+          </ul>
+          <h4 class="role-subsection">AI Adoption</h4>
+          <ul>
+            <li>Led AI adoption in the team by treating AI as a tool rather than a shortcut: focused first on preparing the engineering environment, workflows, and guardrails needed to avoid &quot;garbage in, garbage out,&quot; while keeping human review and control over generated outputs.</li>
+            <li>Drove adoption through education, practical enablement, and result-based work with skeptics, moving the team from near-zero usage to a state where ~75–80% of code is generated by agents under controlled workflows.</li>
+          </ul>
+          <p class="meta">Senior Software Engineer, Team Lead | Dec 2023 - Jul 2025</p>
+          <p>Acted as technical lead for a 4-engineer sub-team responsible for productionizing ML pipelines and distributed systems for the Opta Vision platform, delivering AI-driven metrics across multiple competitions.</p>
+          <h4 class="role-subsection">Key Contributions</h4>
+          <ul>
+            <li>Designed and implemented multiple event-driven pipelines and services generating real-time and post-game metrics
+              <ul>
+                <li>(Scale of the systems is described in the EM section above)</li>
+              </ul></li>
+            <li>Rebuilt underperforming pipelines, removing architectural bottlenecks and improving throughput</li>
+            <li>Identified and fixed critical inefficiencies in DynamoDB usage:
+              <ul>
+                <li>redesigned schema to eliminate expensive scan operations</li>
+                <li>achieved significant cost reduction and performance improvement</li>
+              </ul></li>
+            <li>Led migration of compute workloads from AWS-managed services to Kubernetes as part of a cost optimization initiative</li>
+          </ul>
+          <h4 class="role-subsection">Technical Leadership</h4>
+          <ul>
+            <li>Drove architecture decisions</li>
+            <li>Mentored engineers</li>
+            <li>Introduced design-first development (design docs), improving alignment and reducing rework</li>
+            <li>Participated in hiring processes</li>
+          </ul>
+        </article>
+
+        <article class="role">
+          <h3>Merck (MSD Czech Republic)</h3>
+          <p class="meta">Scientific Software Engineer, Team Lead | Jul 2021 - Nov 2023 | Prague, Czechia</p>
+          <ul>
+            <li>Developed advanced algorithms for scientific and bioinformatics applications</li>
+            <li>Contributed to a patented reaction-pathfinder system (US Patent: 20240105285)</li>
+            <li>Built AWS-based, event-driven genomics platforms with Batch, Lambda, Step Functions, SQS, DynamoDB, and Redshift</li>
+            <li>Implemented Terraform-based infrastructure, CI/CD, and production observability practices</li>
+            <li>Led cross-functional delivery of a production mRNA optimization platform</li>
+          </ul>
+          <p class="meta">Python Developer / Machine Learning Engineer | May 2019 - Jul 2021</p>
+          <p>Worked in the AI group across business domains and collaborated with bioinformatics teams on molecular computation and optimization challenges for drug discovery.</p>
+        </article>
+
+        <article class="role">
+          <h3>Dimension Data</h3>
+          <p class="meta">Data ETL Engineer | Dec 2017 - Apr 2019 | Czech Republic</p>
+          <ul>
+            <li>Built BI infrastructure from scratch for a major European client</li>
+            <li>Designed automated dataflows and operational reporting workflows</li>
+            <li>Maintained data quality and stakeholder-facing delivery</li>
+          </ul>
+        </article>
+
+        <article class="role">
+          <h3>ORIFLAME SOFTWARE</h3>
+          <p class="meta">Intern - Data Scientist, BI/DWH Developer | Jun 2017 - Aug 2017 | Olomouc</p>
+          <ul>
+            <li>Applied ML and NLP for sales forecasting and customer-review sentiment analysis</li>
+            <li>Built ETL connector pipelines with Pentaho ETL and Python automation</li>
+          </ul>
+        </article>
+
+        <article class="role">
+          <h3>Freelance</h3>
+          <p class="meta">Freelance Web Developer | Sep 2016 - Dec 2016</p>
+          <p>Built web tooling and automated mail reporting for a renovation-oriented web service using Node.js, HTML, CSS preprocessors, and template engines.</p>
+        </article>
+
+        <article class="role">
+          <h3>DTU - Technical University of Denmark</h3>
+          <p class="meta">Researcher | Sep 2016 - Nov 2016 | Kongens Lyngby, Denmark</p>
+          <p>Worked on quantum optomechanics research with focus on theoretical foundations of a stroboscopic optomechanical transducer in collaboration with an experimental research team.</p>
+        </article>
+      </section>
+      <section class="section grid-two">
+        <div>
+          <h2>Education</h2>
+          <ul>
+            <li><strong>Univerzita Palackeho v Olomouci</strong><br />PhD, Quantum Physics (Sep 2014 - Mar 2021)</li>
+            <li><strong>Lomonosov Moscow State University (MSU)</strong><br />Master of Science, Physics (2008 - 2014)</li>
+          </ul>
+        </div>
+        <div>
+          <h2>Languages</h2>
+          <ul>
+            <li>Russian (Native)</li>
+            <li>English (Fluent, Professional Working)</li>
+            <li>French (Limited Working)</li>
+            <li>Czech (Intermediate)</li>
+          </ul>
+        </div>
+      </section>
+      <section class="section grid-two">
+        <div>
+          <h2>Technologies</h2>
+          <ul>
+            <li><strong>Languages &amp; Core:</strong> Python, Go, SQL, Bash, C++, JavaScript</li>
+            <li><strong>Cloud &amp; Infrastructure:</strong> AWS, Kubernetes, IaaC (Terraform), CI/CD (Jenkins, ArgoCD)</li>
+            <li><strong>Streaming &amp; Messaging:</strong> Kafka, Apache Flink, SQS, SNS</li>
+            <li><strong>Databases:</strong> Relational (Redshift, PostgreSQL, MySQL), NoSQL (DynamoDB), Graph (Neo4j)</li>
+            <li><strong>ML / Data Science:</strong> pandas, Polars, scikit-learn, PyTorch</li>
+            <li><strong>Orchestration:</strong> Airflow, Temporal</li>
+            <li><strong>Observability:</strong> ELK, Grafana, OpenTelemetry</li>
+          </ul>
+        </div>
+        <div>
+          <h2>Selected Publications</h2>
+          <ul>
+            <li>Statistical spring in the Advanced LIGO detector with unbalanced arms and in the Michelson-Sagnac interferometer</li>
+            <li>mRNAid, an open-source platform for therapeutic mRNA design and optimization strategies</li>
+            <li>Pulsed quantum interaction between two distant mechanical oscillators</li>
+            <li>Squeezer-based pulsed optomechanical interface</li>
+            <li>Pulsed quantum continuous-variable optoelectromechanical transducer</li>
+          </ul>
+        </div>
       </section>
     </main>
 

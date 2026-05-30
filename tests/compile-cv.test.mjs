@@ -43,8 +43,41 @@ async function withTemporarySource(source, callback) {
     return await callback();
   } finally {
     await writeFile(sourcePath, original, "utf8");
+    await execFileAsync(process.execPath, [compileScript], { cwd: rootDir });
   }
 }
+
+test("restores generated HTML after temporary-source test failures", async () => {
+  await execFileAsync(process.execPath, [compileScript], { cwd: rootDir });
+  const originalHtml = await readFile(outputPath, "utf8");
+
+  await assert.rejects(
+    withTemporarySource(
+      `---
+pageTitle: Broken Temp Page | CV
+description: Cleanup regression test
+promptPrefix: test@cv:~$
+promptCommand: cat broken.txt
+name: Broken Temp Page
+subtitle: Temporary content
+location: Test Lab
+---
+
+## Summary
+This content should never stay published.
+`,
+      async () => {
+        await execFileAsync(process.execPath, [compileScript], { cwd: rootDir });
+        throw new Error("intentional test failure");
+      }
+    ),
+    /intentional test failure/
+  );
+
+  const restoredHtml = await readFile(outputPath, "utf8");
+
+  assert.equal(restoredHtml, originalHtml, "Expected generated HTML to be restored after temporary-source test failure");
+});
 
 test("renders level-5 markdown headings in Experience roles", async () => {
   await execFileAsync(process.execPath, [compileScript], { cwd: rootDir });
