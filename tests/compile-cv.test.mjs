@@ -132,6 +132,26 @@ test("renders terminal prompt command line in hero for webpage", async () => {
   );
 });
 
+test("normalizes Prague-based experience locations to Prague, Czechia", async () => {
+  await execFileAsync(process.execPath, [compileScript], { cwd: rootDir });
+
+  const html = await readFile(outputPath, "utf8");
+
+  assert.ok(
+    html.includes("Engineering Manager | Jul 2025 - Present | Prague, Czechia"),
+    "Expected current Prague-based role location to use Prague, Czechia"
+  );
+  assert.ok(
+    html.includes("Scientific Software Engineer, Team Lead | Jul 2021 - Nov 2023 | Prague, Czechia"),
+    "Expected Merck Prague-based role location to use Prague, Czechia"
+  );
+  assert.equal(
+    html.includes("Prague, Czech Republic"),
+    false,
+    "Expected older Prague location wording to be removed from experience entries"
+  );
+});
+
 test("does not include reveal animation classes in generated HTML", async () => {
   await execFileAsync(process.execPath, [compileScript], { cwd: rootDir });
 
