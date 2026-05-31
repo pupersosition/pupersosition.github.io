@@ -47,7 +47,7 @@ async function withTemporarySource(source, callback) {
   }
 }
 
-test("restores generated HTML after temporary-source test failures", async () => {
+test("restores generated HTML after temporary-source test failures", { concurrency: false }, async () => {
   await execFileAsync(process.execPath, [compileScript], { cwd: rootDir });
   const originalHtml = await readFile(outputPath, "utf8");
 
@@ -79,19 +79,43 @@ This content should never stay published.
   assert.equal(restoredHtml, originalHtml, "Expected generated HTML to be restored after temporary-source test failure");
 });
 
-test("renders level-5 markdown headings in Experience roles", async () => {
-  await execFileAsync(process.execPath, [compileScript], { cwd: rootDir });
+test("renders level-5 markdown headings in Experience roles", { concurrency: false }, async () => {
+  await withTemporarySource(
+    `---
+pageTitle: Role Subsection Test | CV
+description: Experience subsection rendering regression test
+promptPrefix: test@cv:~$
+promptCommand: cat role-subsection.txt
+name: Role Subsection Test
+subtitle: Experience markdown coverage
+location: Test Lab
+---
 
-  const html = await readFile(outputPath, "utf8");
+## Experience
+### Example Corp
+#### Staff Engineer | Jan 2024 - Present | Test Lab
+##### Scope & Systems
+- Built the renderer fixture.
+`,
+    async () => {
+      await execFileAsync(process.execPath, [compileScript], { cwd: rootDir });
 
-  assert.ok(
-    html.includes('<h4 class="role-subsection">Scope &amp; Systems</h4>'),
-    "Expected ##### heading to render as a subsection heading"
-  );
-  assert.equal(
-    html.includes("##### Scope &amp; Systems"),
-    false,
-    "Expected raw ##### markdown not to appear in rendered HTML"
+      const html = await readFile(outputPath, "utf8");
+
+      assert.ok(
+        html.includes('<p class="meta">Staff Engineer | Jan 2024 - Present | Test Lab</p>'),
+        "Expected role metadata to render alongside the subsection fixture"
+      );
+      assert.ok(
+        html.includes('<h4 class="role-subsection">Scope &amp; Systems</h4>'),
+        "Expected ##### heading to render as a subsection heading"
+      );
+      assert.equal(
+        html.includes("##### Scope &amp; Systems"),
+        false,
+        "Expected raw ##### markdown not to appear in rendered HTML"
+      );
+    }
   );
 });
 
@@ -164,19 +188,45 @@ test("does not include reveal animation classes in generated HTML", async () => 
   );
 });
 
-test("renders indented markdown sub-items as nested lists", async () => {
-  await execFileAsync(process.execPath, [compileScript], { cwd: rootDir });
+test("renders indented markdown sub-items as nested lists", { concurrency: false }, async () => {
+  await withTemporarySource(
+    `---
+pageTitle: Nested List Test | CV
+description: Nested list rendering regression test
+promptPrefix: test@cv:~$
+promptCommand: cat nested-list.txt
+name: Nested List Test
+subtitle: Markdown list coverage
+location: Test Lab
+---
 
-  const html = await readFile(outputPath, "utf8");
+## Summary
+- Parent item, e.g.:
+  - First child item
+  - Second child item
+`,
+    async () => {
+      await execFileAsync(process.execPath, [compileScript], { cwd: rootDir });
 
-  assert.ok(
-    html.includes("<li>Defined and enforced pipeline-level SLOs (latency and data completeness), e.g.:\n              <ul>"),
-    "Expected parent list item to contain nested sub-list markup"
-  );
-  assert.equal(
-    html.includes("<li>Defined and enforced pipeline-level SLOs (latency and data completeness), e.g.:\n- metric generation every minute with ≤5 min latency"),
-    false,
-    "Expected indented sub-items not to remain as raw markdown text"
+      const html = await readFile(outputPath, "utf8");
+
+      assert.ok(
+        /<li>Parent item, e\.g\.:\s*<ul>\s*<li>First child item<\/li>\s*<li>Second child item<\/li>\s*<\/ul><\/li>/.test(
+          html
+        ),
+        "Expected parent list item to contain nested sub-list markup"
+      );
+      assert.equal(
+        html.includes("Parent item, e.g.:</li>"),
+        false,
+        "Expected parent list item not to close before nested sub-items render"
+      );
+      assert.equal(
+        html.includes("- First child item"),
+        false,
+        "Expected indented sub-items not to remain as raw markdown text"
+      );
+    }
   );
 });
 
@@ -207,7 +257,7 @@ test("uses content-based asset version for stylesheet and script URLs", async ()
   );
 });
 
-test("renders markdown emphasis markers as semantic inline HTML", async () => {
+test("renders markdown emphasis markers as semantic inline HTML", { concurrency: false }, async () => {
   await withTemporarySource(
     `---
 pageTitle: Emphasis Test | CV
@@ -249,7 +299,7 @@ test("loads italic font variants needed for rendered emphasis", async () => {
   );
 });
 
-test("renders bold inline text with ampersands without double-escaping entities", async () => {
+test("renders bold inline text with ampersands without double-escaping entities", { concurrency: false }, async () => {
   await withTemporarySource(
     `---
 pageTitle: Ampersand Test | CV

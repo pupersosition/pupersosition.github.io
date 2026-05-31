@@ -406,6 +406,10 @@ li {
   margin: 0.2rem 0;
 }
 
+.role li + li {
+  margin-top: 0.52rem;
+}
+
 a {
   color: var(--link);
   text-decoration-thickness: 0.09em;
@@ -453,7 +457,7 @@ a {
 @media print {
   @page {
     size: A4;
-    margin: 12mm;
+    margin: 10mm;
   }
 
   :root,
@@ -466,14 +470,14 @@ a {
     --line: #dddddd;
     --surface-top: #ffffff;
     --surface-bottom: #ffffff;
-    --link: #000000;
+    --link: #0b57d0;
     --shell-shadow: none;
   }
 
   body {
     background: #ffffff;
-    font-size: 10.5px;
-    line-height: 1.45;
+    font-size: 10.3px;
+    line-height: 1.39;
   }
 
   .screen-noise,
@@ -490,12 +494,16 @@ a {
     margin: 0;
     border: 0;
     box-shadow: none;
-    font-size: 10.5px;
+    font-size: 10.3px;
   }
 
   .section,
   .role {
     break-inside: auto;
+  }
+
+  .section {
+    padding: 1.06rem 1.22rem;
   }
 
   .grid-two {
@@ -510,7 +518,12 @@ a {
   }
 
   h2 {
+    margin-bottom: 0.56rem;
     font-size: 0.9rem;
+  }
+
+  h3 {
+    margin-bottom: 0.16rem;
   }
 
   .role-subsection {
@@ -520,10 +533,27 @@ a {
   }
 
   .meta {
+    margin-bottom: 0.46rem;
     font-size: 0.66rem;
     font-weight: 700;
     letter-spacing: 0.06em;
     color: #1f1f1f;
+  }
+
+  p {
+    margin: 0.28rem 0 0.56rem;
+  }
+
+  ul {
+    margin: 0.12rem 0 0.56rem;
+  }
+
+  li {
+    margin: 0.12rem 0;
+  }
+
+  .role li + li {
+    margin-top: 0.42rem;
   }
 
   .meta::before {
@@ -531,6 +561,9 @@ a {
   }
 
   a {
-    text-decoration: none;
+    color: var(--link);
+    text-decoration: underline;
+    text-decoration-thickness: 0.06em;
+    text-underline-offset: 0.1em;
   }
 }
