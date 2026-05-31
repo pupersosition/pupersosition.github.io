@@ -4,7 +4,7 @@ description: Nikita Vostrosablin, PhD - Engineering Manager focused on AI and di
 promptPrefix: nikita@cv:~$
 promptCommand: cat nikita_vostrosablin_cv.txt
 name: Nikita Vostrosablin, PhD
-subtitle: Engineering Leader focused on production ML and backend systems. I bring experience from both research-heavy and product-focused environments and remain deeply technical while driving operational improvements.
+subtitle: Engineering Leader focused on production ML and backend systems. I bring experience from both research-heavy and product-focused environments.
 location: Prague, Czechia
 ---
 
