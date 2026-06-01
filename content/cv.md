@@ -28,7 +28,7 @@ Syntax:
 Lead a team of 9-12 engineers owning production ML and data pipelines for sports analytics products.
 
 - Own architecture, reliability, and operational health for ~30 production ML/data pipelines and ~150 distributed Python services across AWS and on-prem Kubernetes, including systems processing thousands of events/sec and 25 Hz streaming workloads.
-- Drove architectural decisions and launches for new production pipelines and systems, while improving the reliability and operability of existing ones.
+- Drove architectural decisions and launches for new production pipelines and systems, while improving the reliability and operability of existing ones (*example*: Championed Apache Flink over the original PoC stack across 3 collaborating teams; pipeline was rebuilt on it and validated as the stronger solution).
 - Defined pipeline SLOs and introduced structured observability, alerting, and on-call practices, cutting incident resolution from multiple days to ~1 day and support load from ~25% to ~2% of team capacity.
 - Improved key pipeline processing times by up to ~80% through architectural redesign and algorithmic optimization (*example*: by removing Kafka single-topic bottlenecks with fan-out service patterns).
 - Established service standardization, end-to-end testing, and integration testing, enabling multiple deployments per day and reducing idea-to-production lead time to ~1 week.
