@@ -78,7 +78,7 @@ Tech: Python, Apache Airflow, Jenkins, PowerBI, OracleDB
 - Built **BI infrastructure** for a **major European client**, covering automated dataflows, reporting, and data-quality processes.
 
 ### ORIFLAME SOFTWARE
-#### Intern - **Data** Scientist, BI/DWH Developer | Jun 2017 - Aug 2017 | Olomouc, Czechia
+#### **Data** Scientist | Jun 2017 - Aug 2017 | Olomouc, Czechia
 ::: role-tags
 Tech: Python (scikit-learn, pandas, NumPy), NLP, Machine Learning
 :::

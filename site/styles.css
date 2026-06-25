@@ -449,7 +449,7 @@ p {
 }
 
 .role-tag-items {
-  color: color-mix(in srgb, var(--text) 90%, var(--muted) 10%);
+  color: color-mix(in srgb, var(--text) 64%, var(--muted) 36%);
 }
 
 .role-tag {
@@ -548,8 +548,8 @@ a {
 
   body {
     background: #ffffff;
-    font-size: 13px;
-    line-height: 1.38;
+    font-size: 11.5px;
+    line-height: 1.34;
   }
 
   .screen-noise,
@@ -566,7 +566,7 @@ a {
     margin: 0;
     border: 0;
     box-shadow: none;
-    font-size: 13px;
+    font-size: 11.5px;
   }
 
   .section,
@@ -575,7 +575,7 @@ a {
   }
 
   .section {
-    padding: 0.72rem 1rem;
+    padding: 0.56rem 1rem;
   }
 
   .grid-two {
@@ -616,7 +616,7 @@ a {
   .role-header {
     grid-template-columns: auto minmax(0, 1fr) auto;
     gap: 0.28rem;
-    margin: 0.96rem 0 0.48rem;
+    margin: 0.72rem 0 0.36rem;
   }
 
   .role-header-marker {
@@ -648,8 +648,8 @@ a {
   .role-tags {
     gap: 0.08rem;
     break-inside: avoid;
-    margin: 1.04rem 0 1.38rem 0.65rem;
-    font-size: 0.7rem;
+    margin: 1.02rem 0 0.5rem 0.65rem;
+    font-size: 0.66rem;
     line-height: 1.24;
   }
 
@@ -659,6 +659,10 @@ a {
 
   .role-tag-label {
     color: #333333;
+  }
+
+  .role-tag-items {
+    color: #888888;
   }
 
   .role-tag {
@@ -684,10 +688,6 @@ a {
     padding-left: 1.28rem;
   }
 
-  .role ul {
-    break-inside: avoid-page;
-  }
-
   li {
     margin: 0.07rem 0;
     font-size: 0.94em;
@@ -706,8 +706,8 @@ a {
   }
 
   .role + .role {
-    margin-top: 2.34rem;
-    padding-top: 0.66rem;
+    margin-top: 0.72rem;
+    padding-top: 0.36rem;
     border-top: 0;
   }
 
