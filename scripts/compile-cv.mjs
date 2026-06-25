@@ -233,6 +233,13 @@ function parseContentBlocks(lines, startIndex, options) {
       continue;
     }
 
+    if (options.roleMode && lines[index].trim() === "::: role-tags") {
+      const result = parseRoleTags(lines, index);
+      blocks.push(result.block);
+      index = result.index;
+      continue;
+    }
+
     if (lines[index].startsWith("- ")) {
       const result = parseList(lines, index, options);
       blocks.push(result.block);
@@ -246,6 +253,47 @@ function parseContentBlocks(lines, startIndex, options) {
   }
 
   return { blocks, index };
+}
+
+function parseRoleTags(lines, startIndex) {
+  const groups = [];
+  let index = startIndex + 1;
+
+  while (index < lines.length) {
+    const line = lines[index].trim();
+
+    if (line === ":::") {
+      return {
+        block: { type: "roleTags", groups },
+        index: index + 1
+      };
+    }
+
+    if (!line) {
+      index += 1;
+      continue;
+    }
+
+    const match = line.match(/^([^:]+):\s*(.+)$/);
+    if (!match) {
+      throw new Error(`Invalid role-tags line at line ${index + 1}: ${lines[index]}`);
+    }
+
+    const [, label, rawItems] = match;
+    const items = rawItems
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
+
+    if (!items.length) {
+      throw new Error(`Role-tags line must include at least one item at line ${index + 1}`);
+    }
+
+    groups.push({ label: label.trim(), items });
+    index += 1;
+  }
+
+  throw new Error("Unclosed ::: role-tags block");
 }
 
 function parseList(lines, startIndex, options) {
@@ -390,9 +438,9 @@ function renderPage(frontmatter, blocks, assetVersion, documentVersion) {
             </button>
           </div>
         </div>
-        <h1>${escapeHtml(frontmatter.name || "")}</h1>
-        <p class="subtitle">${escapeHtml(frontmatter.subtitle || "")}</p>
-        <p class="location">${escapeHtml(frontmatter.location || "")}</p>
+        <h1>${renderInline(frontmatter.name || "")}</h1>
+        <p class="subtitle">${renderInline(frontmatter.subtitle || "")}</p>
+        <p class="location">${renderInline(frontmatter.location || "")}</p>
       </header>
 ${blocks.map(renderTopLevelBlock).join("\n")}
     </main>
@@ -411,28 +459,28 @@ ${block.sections.map((section) => renderColumn(section)).join("\n")}
 
   if (block.type === "experience") {
     return `      <section class="section">
-        <h2>${escapeHtml(block.title)}</h2>
+        <h2>${renderInline(block.title)}</h2>
 
 ${block.roles.map(renderRole).join("\n\n")}
       </section>`;
   }
 
   return `      <section class="section">
-        <h2>${escapeHtml(block.title)}</h2>
+        <h2>${renderInline(block.title)}</h2>
 ${renderGenericBlocks(block.blocks, "        ")}
       </section>`;
 }
 
 function renderColumn(section) {
   return `        <div>
-          <h2>${escapeHtml(section.title)}</h2>
+          <h2>${renderInline(section.title)}</h2>
 ${renderGenericBlocks(section.blocks, "          ")}
         </div>`;
 }
 
 function renderRole(role) {
   return `        <article class="role">
-          <h3>${escapeHtml(role.company)}</h3>
+          <h3>${renderInline(role.company)}</h3>
 ${renderRoleBlocks(role.blocks)}
         </article>`;
 }
@@ -441,7 +489,7 @@ function renderRoleBlocks(blocks) {
   return blocks
     .map((block) => {
       if (block.type === "meta") {
-        return `          <p class="meta">${renderInline(block.text)}</p>`;
+        return renderRoleHeader(block.text);
       }
 
       if (block.type === "subsection") {
@@ -456,9 +504,44 @@ function renderRoleBlocks(blocks) {
         return renderList(block.items, "          ");
       }
 
+      if (block.type === "roleTags") {
+        return renderRoleTags(block.groups);
+      }
+
       throw new Error(`Unsupported role block type: ${block.type}`);
     })
     .join("\n");
+}
+
+function renderRoleHeader(text) {
+  const parts = text.split("|").map((part) => part.trim()).filter(Boolean);
+
+  if (parts.length >= 2) {
+    const [title, ...details] = parts;
+
+    return `          <div class="role-header">
+            <span class="role-header-marker">&gt;</span>
+            <span class="role-title">${renderInline(title)}</span>
+            <span class="role-details">${renderInline(details.join(" | "))}</span>
+          </div>`;
+  }
+
+  return `          <p class="meta">${renderInline(text)}</p>`;
+}
+
+function renderRoleTags(groups) {
+  return `          <div class="role-tags" aria-label="Role highlights">
+${groups
+  .map((group) => {
+    const items = group.items.map((item) => `<span class="role-tag">${renderInline(item)}</span>`).join("");
+
+    return `            <div class="role-tag-group">
+              <span class="role-tag-label">${escapeHtml(group.label)}</span>
+              <span class="role-tag-items">${items}</span>
+            </div>`;
+  })
+  .join("\n")}
+          </div>`;
 }
 
 function renderGenericBlocks(blocks, indent) {
