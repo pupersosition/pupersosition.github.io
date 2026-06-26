@@ -6,6 +6,8 @@ promptCommand: cat nikita_vostrosablin_cv.txt
 name: Nikita Vostrosablin, PhD
 subtitle: Engineering Leader focused on production ML and backend systems. I bring experience from both research-heavy and product-focused environments.
 location: Prague, Czechia
+phone: +420 722 439 593
+relocation: Open to relocation
 ---
 
 <!--
@@ -19,6 +21,7 @@ Syntax:
 -->
 
 ## Contact
+- [+420 722 439 593](tel:+420722439593)
 - [nikita.vostrosablin@gmail.com](mailto:nikita.vostrosablin@gmail.com)
 - [linkedin.com/in/nikita-vostrosablin-phd-98461594](https://www.linkedin.com/in/nikita-vostrosablin-phd-98461594)
 
@@ -26,7 +29,7 @@ Syntax:
 ### Stats Perform
 #### Engineering Manager | Jul 2025 - Present | Prague, Czechia
 ::: role-tags
-Tech: Python (FastAPI, Pydantic, scikit-learn, pandas, PyTorch), Bash, SQL, PostgreSQL, AWS, Kubernetes, Kafka, Spark, Terraform
+Tech: Python (FastAPI, Pydantic, scikit-learn, pandas, PyTorch), Bash, SQL, PostgreSQL, AWS, Kubernetes, Kafka, Terraform
 Skills: Team management, Project management, Stakeholder management, Incident management, System design
 :::
 

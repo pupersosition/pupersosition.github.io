@@ -5,6 +5,7 @@
     "puppeteer": "^24.7.1"
   },
   "scripts": {
-    "build": "node scripts/compile-cv.mjs && node scripts/render-pdf.mjs"
+    "build": "node scripts/compile-cv.mjs && node scripts/render-pdf.mjs",
+    "test": "node --test"
   }
 }

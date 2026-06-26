@@ -438,9 +438,13 @@ function renderPage(frontmatter, blocks, assetVersion, documentVersion) {
             </button>
           </div>
         </div>
-        <h1>${renderInline(frontmatter.name || "")}</h1>
-        <p class="subtitle">${renderInline(frontmatter.subtitle || "")}</p>
-        <p class="location">${renderInline(frontmatter.location || "")}</p>
+        <div class="hero-body">
+          <div class="hero-summary">
+            <h1>${renderInline(frontmatter.name || "")}</h1>
+            <p class="subtitle">${renderInline(frontmatter.subtitle || "")}</p>
+          </div>
+          ${renderHeroContact(frontmatter, blocks)}
+        </div>
       </header>
 ${blocks.map(renderTopLevelBlock).join("\n")}
     </main>
@@ -448,6 +452,60 @@ ${blocks.map(renderTopLevelBlock).join("\n")}
     <script src="./script.js?v=${assetVersion}"></script>
   </body>
 </html>`;
+}
+
+function renderHeroContact(frontmatter, blocks) {
+  const contactSection = blocks.find((block) => block.type === "section" && block.title === "Contact");
+  const contactItems = (contactSection?.blocks
+    .filter((block) => block.type === "list")
+    .flatMap((block) => block.items)
+    .map((item) => typeof item === "string" ? item : item.text)
+    .filter(Boolean) || [])
+    .filter((item) => !frontmatter.phone || !item.includes(frontmatter.phone));
+
+  const rows = [];
+  if (frontmatter.location) {
+    rows.push({ className: "hero-contact-location", label: "location", value: frontmatter.location });
+  }
+  if (frontmatter.phone) {
+    rows.push({ label: "phone", value: frontmatter.phone });
+  }
+
+  for (const item of contactItems) {
+    const value = getPlainContactText(item);
+    if (value.includes("@")) {
+      rows.push({ label: "email", value });
+      continue;
+    }
+
+    if (/linkedin\.com/i.test(value)) {
+      rows.push({ label: "linkedin", value });
+      continue;
+    }
+
+    rows.push({ label: "contact", value });
+  }
+
+  const contacts = rows.map((row) => {
+    const classAttribute = row.className ? ` class="${row.className}"` : "";
+    return `<li${classAttribute}><span class="hero-contact-label">${escapeHtml(row.label)}:</span> ${escapeHtml(row.value)}</li>`;
+  }).join("\n              ");
+  const relocation = frontmatter.relocation ? `<p class="hero-tag">${escapeHtml(frontmatter.relocation)}</p>` : "";
+
+  return `<aside class="hero-contact" aria-label="Contact information">
+            <ul class="hero-contact-list">
+              ${contacts}
+            </ul>
+            ${relocation}
+          </aside>`;
+}
+
+function getPlainContactText(text) {
+  return text
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
+    .replace(/^https?:\/\/www\./i, "")
+    .replace(/^https?:\/\//i, "")
+    .trim();
 }
 
 function renderTopLevelBlock(block) {
@@ -465,7 +523,9 @@ ${block.roles.map(renderRole).join("\n\n")}
       </section>`;
   }
 
-  return `      <section class="section">
+  const sectionClass = block.title === "Contact" ? "section contact-section" : "section";
+
+  return `      <section class="${sectionClass}">
         <h2>${renderInline(block.title)}</h2>
 ${renderGenericBlocks(block.blocks, "        ")}
       </section>`;
