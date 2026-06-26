@@ -4,6 +4,9 @@
 # Hugo generated files
 .hugo_build.lock
 
+# Docs
+/docs/
+
 # OS generated files
 .DS_Store
 .DS_Store?
