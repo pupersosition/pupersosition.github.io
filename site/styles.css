@@ -537,6 +537,19 @@ a {
     grid-template-columns: 1fr;
   }
 
+  .role-header {
+    grid-template-columns: auto minmax(0, 1fr);
+    row-gap: 0.2rem;
+    align-items: start;
+  }
+
+  .role-details {
+    grid-column: 2;
+    justify-self: start;
+    text-align: left;
+    white-space: normal;
+  }
+
   .role-tag {
     white-space: normal;
   }
